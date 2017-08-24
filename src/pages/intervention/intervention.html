@@ -1,0 +1,19 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'INTERVENTION_TITLE' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-label> {{'INTEVENTION_ALERT' | translate}}</ion-label>
+
+  <ion-datetime  displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="alertTime"></ion-datetime>
+
+  <ion-toggle checked="false" [(ngModel)]="alertActive"></ion-toggle>
+
+  <button ion-button round large>Primary Round</button>
+
+</ion-content>
