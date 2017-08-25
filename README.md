@@ -1,6 +1,4 @@
-# smile-studie.de
-Landing page for the smile project.
-
+# smile-studie-ionic
 
 This is a starter template for [Ionic](http://ionicframework.com/docs/) projects.
 
