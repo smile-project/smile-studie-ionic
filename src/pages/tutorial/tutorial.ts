@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {NavController} from "ionic-angular";
 import {TranslateService} from "@ngx-translate/core";
-import {HomePage} from "../home/home";
+import {InterventionPage} from "../intervention/intervention";
 
 export interface Slide {
   title: string;
@@ -53,7 +53,7 @@ export class TutorialPage {
   };
 
   startApp() {
-    this.navCtrl.setRoot(HomePage, {}, {
+    this.navCtrl.setRoot(InterventionPage, {}, {
       animate: true,
       direction: 'forward'
     });

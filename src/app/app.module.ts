@@ -5,7 +5,6 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 
 import {MyApp} from './app.component';
-import {HomePage} from '../pages/home/home';
 import {LoginPage} from "../pages/login/login";
 import {Http, HttpModule} from "@angular/http";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
@@ -16,6 +15,10 @@ import {TutorialPage} from "../pages/tutorial/tutorial";
 import {InterventionPage} from "../pages/intervention/intervention";
 import {Settings} from "../providers/settings";
 import {IonicStorageModule, Storage} from "@ionic/storage";
+import {AuthenticationService} from "../services/AuthenticationService";
+import {SmileQueryService} from "../services/SmileQueryService";
+import {QuestionairePage} from "../pages/questionaire/questionaire";
+import {ProgressBarComponent} from "../components/progressbar.component";
 
 
 export function HttpLoaderFactory(http: Http) {
@@ -33,12 +36,13 @@ export function provideSettings(storage:Storage){
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
     LoginPage,
     RegisterPage,
     WelcomePage,
     TutorialPage,
-    InterventionPage
+    InterventionPage,
+    QuestionairePage,
+    ProgressBarComponent
   ],
   imports: [
     BrowserModule,
@@ -57,16 +61,18 @@ export function provideSettings(storage:Storage){
   entryComponents: [
     MyApp,
     InterventionPage,
-    HomePage,
     LoginPage,
     RegisterPage,
     WelcomePage,
-    TutorialPage
+    TutorialPage,
+    QuestionairePage
   ],
   providers: [
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     StatusBar,
     SplashScreen,
+    AuthenticationService,
+    SmileQueryService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })

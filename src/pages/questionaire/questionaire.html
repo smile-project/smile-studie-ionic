@@ -1,0 +1,28 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'QUESTIONAIRE_TITLE' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+  <progress-bar [progress]="loadProgress"></progress-bar>
+
+  <ion-slides #slides>
+
+    <ion-slide>
+
+      <h1>{{questionaire.title}}</h1>
+      <h5>{{questionaire.description}}</h5>
+      <button ion-button (click)="nextSlide()">Next</button>
+    </ion-slide>
+
+    <ion-slide *ngFor="let page of questionaire.pages">
+      <h1>{{page.title}}</h1>
+      <button ion-button (click)="nextSlide()">Next</button>
+    </ion-slide>
+
+  </ion-slides>
+
+</ion-content>

@@ -1,5 +1,6 @@
 {
-  "WELCOME_INTRO": "Hallo bei der smile-studie",
+  "USERNAME": "Nutzername",
+  "WELCOME_INTRO": "Wilkommen bei der smile-studie",
   "BACK_BUTTON_TEXT": "Zurück",
   "NAME": "Name",
   "PASSWORD": "Passwort",
@@ -8,7 +9,7 @@
   "SIGNUP": "Registrieren",
   "CANCEL_BUTTON": "Schließen",
   "LOGIN_TITLE": "Anmelden",
-  "LOGIN_ERROR": "Fehler beim Anmelden, bitte überprüfe deine Informationen und versuche es erneut.",
+  "LOGIN_ERROR": "Fehler beim Anmelden, Benutzername oder Passwort ist inkorrekt",
   "LOGIN_BUTTON": "Anmelden",
   "SIGNUP_TITLE": "Registrieren",
   "SIGNUP_ERROR": "Fehler beim Registrieren, bitte überprüfe deine Informationen und versuche es erneut.",

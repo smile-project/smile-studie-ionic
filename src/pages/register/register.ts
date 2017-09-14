@@ -1,7 +1,8 @@
 import {Component} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
-import {NavController} from "ionic-angular";
+import {NavController, ToastController} from "ionic-angular";
 import {TutorialPage} from "../tutorial/tutorial";
+import {AuthenticationService} from "../../services/AuthenticationService";
 @Component({
   selector: 'register-page',
   templateUrl: 'register.html'
@@ -9,16 +10,17 @@ import {TutorialPage} from "../tutorial/tutorial";
 export class RegisterPage {
 
   account: {
-    username: string, password: string
+    email: string, password: string
   } = {
-    username: 'examplename', password: ''
+    email: '', password: ''
   };
-
 
   private signupErrorString: string;
 
   constructor(public navCtrl: NavController,
-              public translateService: TranslateService) {
+              public translateService: TranslateService,
+              public authenticationService: AuthenticationService,
+              public toastCtrl: ToastController) {
 
     this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
       this.signupErrorString = value;
@@ -28,6 +30,27 @@ export class RegisterPage {
 
 
   doSignup() {
-    this.navCtrl.push(TutorialPage);
+    this.authenticationService.register(this.account.email, this.account.password).subscribe(result => {
+      if (result) {
+        //registration successful, get an auth token by logging in
+        this.authenticationService.login(this.account.email, this.account.password).subscribe(result => {
+          if (result){
+            this.navCtrl.push(TutorialPage);
+          }
+        })
+      } else {
+        this.showError(this.signupErrorString);
+      }
+    }, error => {
+      this.showError(error);
+    })
+  }
+
+  showError(error: string) {
+    let toast = this.toastCtrl.create({
+      message: error,
+      duration: 3000
+    });
+    toast.present();
   }
 }
