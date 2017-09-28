@@ -31,20 +31,17 @@ export class InterventionPage implements OnInit {
   private checkForQuestionaire() {
     this.smileQueryService.getQuestionaire().subscribe((result) => {
       if (result) {
-        console.log("Good result!");
-        console.log(result);
+        console.log("Good result!", result);
         this.openQuestionaire(result);
       } else {
         // Not sure when this happens
-        console.log("Bad result!");
-        console.log(result);
+        console.log("Bad result!", result);
         this.authenticationService.clearSavedAccount();
         this.navCtrl.setRoot(WelcomePage);
       }
     }, error => {
       // probably 401 unauthorized
-      console.log("Error result!");
-      console.log(error);
+      console.log("Error result!", error);
       this.authenticationService.clearSavedAccount();
       this.navCtrl.setRoot(WelcomePage);
     });

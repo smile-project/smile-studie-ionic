@@ -7,20 +7,30 @@
 </ion-header>
 
 <ion-content>
-  <progress-bar [progress]="loadProgress"></progress-bar>
+  <progress-bar [progress]="shownProgress"></progress-bar>
 
   <ion-slides #slides>
 
     <ion-slide>
-
       <h1>{{questionaire.title}}</h1>
       <h5>{{questionaire.description}}</h5>
       <button ion-button (click)="nextSlide()">Next</button>
     </ion-slide>
 
-    <ion-slide *ngFor="let page of questionaire.pages">
+    <ion-slide *ngFor="let page of questionaire.pages; let i = index">
       <h1>{{page.title}}</h1>
-      <button ion-button (click)="nextSlide()">Next</button>
+      <h5>{{page.text}}</h5>
+
+      <ion-list radio-group [(ngModel)]="currentSelectedValue">
+        <ion-item *ngFor="let answer of page.answers; let j = index">
+          <ion-radio [value]="answer.value"></ion-radio>
+          <ion-label>{{answer.text}}</ion-label>
+        </ion-item>
+      </ion-list>
+
+      <!--[attr.disabled]="!currentSelectedValue"-->
+
+      <button ion-button [disabled]="!currentSelectedValue" (click)="nextSlide()" #nextButton>Next</button>
     </ion-slide>
 
   </ion-slides>
