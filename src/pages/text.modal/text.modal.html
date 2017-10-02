@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Wowwweee</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-item>
+    <ion-label>HALLO</ion-label>
+    <ion-input [(ngModel)]="textInput"></ion-input>
+  </ion-item>
+  <ion-buttons>
+    <button (click)="onConfirm()" ion-button [disabled]="!textInput">OK</button>
+    <button (click)="onCancel()" ion-button>CANCEL</button>
+  </ion-buttons>
+</ion-content>

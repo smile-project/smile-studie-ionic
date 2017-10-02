@@ -1,7 +1,8 @@
-import {Component} from "@angular/core";
-import {NavController} from "ionic-angular";
+import {Component, OnInit, ViewChild} from "@angular/core";
+import {NavController, Slides} from "ionic-angular";
 import {TranslateService} from "@ngx-translate/core";
 import {InterventionPage} from "../intervention/intervention";
+import {TermsPage} from "../terms/terms";
 
 export interface Slide {
   title: string;
@@ -14,43 +15,79 @@ export interface Slide {
   selector: 'tutorial-page',
   templateUrl: 'tutorial.html'
 })
-export class TutorialPage {
+export class TutorialPage implements OnInit {
+  @ViewChild('slider')
+  slider: Slides;
   slides: Slide[];
-  showSkip = true;
+
+  termsAccepted: boolean;
+  wentForward: boolean;
 
   constructor(public navCtrl: NavController,
               public translateService: TranslateService) {
+  }
 
-    translateService.get(["TUTORIAL_SLIDE1_TITLE",
+  ngOnInit() {
+    this.translateService.get(["TUTORIAL_SLIDE1_TITLE",
       "TUTORIAL_SLIDE1_DESCRIPTION",
       "TUTORIAL_SLIDE2_TITLE",
       "TUTORIAL_SLIDE2_DESCRIPTION",
       "TUTORIAL_SLIDE3_TITLE",
       "TUTORIAL_SLIDE3_DESCRIPTION",
+      "TUTORIAL_SLIDE4_TITLE",
+      "TUTORIAL_SLIDE4_DESCRIPTION",
+      "TUTORIAL_SLIDE5_TITLE",
+      "TUTORIAL_SLIDE5_DESCRIPTION",
     ]).subscribe(
       (values) => {
         console.log('Loaded values', values);
         this.slides = [
-          {
-            title: values.TUTORIAL_SLIDE1_TITLE,
-            description: values.TUTORIAL_SLIDE1_DESCRIPTION,
-            image: '',
-          },
-          {
-            title: values.TUTORIAL_SLIDE2_TITLE,
-            description: values.TUTORIAL_SLIDE2_DESCRIPTION,
-            image: 'assets/img/ica-slidebox-img-2.png',
-          },
-          {
-            title: values.TUTORIAL_SLIDE3_TITLE,
-            description: values.TUTORIAL_SLIDE3_DESCRIPTION,
-            image: 'assets/img/ica-slidebox-img-3.png',
-          }
-        ];
+          /*
+           {
+           title: values.TUTORIAL_SLIDE1_TITLE,
+           description: values.TUTORIAL_SLIDE1_DESCRIPTION,
+           image: '',
+           },
+           {
+           title: values.TUTORIAL_SLIDE2_TITLE,
+           description: values.TUTORIAL_SLIDE2_DESCRIPTION,
+           image: ''
+           },
+           {
+           title: values.TUTORIAL_SLIDE3_TITLE,
+           description: values.TUTORIAL_SLIDE3_DESCRIPTION,
+           image: ''
+           },
+           {
+           title: values.TUTORIAL_SLIDE4_TITLE,
+           description: values.TUTORIAL_SLIDE4_DESCRIPTION,
+           image: ''
+           },
+           {
+           title: values.TUTORIAL_SLIDE5_TITLE,
+           description: values.TUTORIAL_SLIDE5_DESCRIPTION,
+           image: ''
+           }
+           */];
       });
 
-
+    this.slider.lockSwipes(true);
   };
+
+  onTermsConfirmation() {
+    if(this.termsAccepted){
+      this.slider.lockSwipes(false);
+      this.slider.slideNext();
+      this.wentForward = true;
+    }
+  }
+
+  openTerms(){
+    this.navCtrl.setRoot(TermsPage, {}, {
+      animate: true,
+      direction: 'forward'
+    })
+  }
 
   startApp() {
     this.navCtrl.setRoot(InterventionPage, {}, {
@@ -58,10 +95,5 @@ export class TutorialPage {
       direction: 'forward'
     });
   }
-
-  onSlideChangeStart(slider) {
-    this.showSkip = !slider.isEnd();
-  }
-
 
 }

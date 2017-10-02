@@ -19,13 +19,15 @@ import {AuthenticationService} from "../services/AuthenticationService";
 import {SmileQueryService} from "../services/SmileQueryService";
 import {QuestionairePage} from "../pages/questionaire/questionaire";
 import {ProgressBarComponent} from "../components/progressbar.component";
+import {TermsPage} from "../pages/terms/terms";
+import {TextModal} from "../pages/text.modal/text.modal";
 
 
 export function HttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-export function provideSettings(storage:Storage){
+export function provideSettings(storage: Storage) {
   return new Settings(storage, {
     alertTime: false,
     alertActive: false
@@ -37,12 +39,14 @@ export function provideSettings(storage:Storage){
   declarations: [
     MyApp,
     LoginPage,
+    TermsPage,
     RegisterPage,
     WelcomePage,
     TutorialPage,
     InterventionPage,
     QuestionairePage,
-    ProgressBarComponent
+    ProgressBarComponent,
+    TextModal
   ],
   imports: [
     BrowserModule,
@@ -54,7 +58,11 @@ export function provideSettings(storage:Storage){
         deps: [Http]
       }
     }),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      scrollPadding: false,
+      scrollAssist: true,
+      autoFocusAssist: false
+    }),
     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
@@ -62,13 +70,15 @@ export function provideSettings(storage:Storage){
     MyApp,
     InterventionPage,
     LoginPage,
+    TermsPage,
     RegisterPage,
     WelcomePage,
     TutorialPage,
-    QuestionairePage
+    QuestionairePage,
+    TextModal
   ],
   providers: [
-    { provide: Settings, useFactory: provideSettings, deps: [Storage] },
+    {provide: Settings, useFactory: provideSettings, deps: [Storage]},
     StatusBar,
     SplashScreen,
     AuthenticationService,

@@ -6,7 +6,7 @@ import {AuthenticationService} from "./AuthenticationService";
 @Injectable()
 export class SmileQueryService {
 
-  private baseUrl = "http://localhost:8080/";
+  private baseUrl = "http://10.176.86.255:8080/";
   private questionaireUrl = this.baseUrl + "questionaire";
   private questionaireAnswerUrl = this.baseUrl + "answer";
 
@@ -30,7 +30,7 @@ export class SmileQueryService {
   sendFunction(response: Response) {
     if (response.status == 200) {
       console.log("Status 200", response);
-      return response.json();
+      return response.json() || null;
     } else {
       console.log("Status != 200", response);
       return false;

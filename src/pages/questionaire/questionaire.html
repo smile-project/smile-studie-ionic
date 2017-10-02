@@ -4,11 +4,11 @@
     <ion-title>{{ 'QUESTIONAIRE_TITLE' | translate }}</ion-title>
   </ion-navbar>
 
-</ion-header>
-
-<ion-content>
   <progress-bar [progress]="shownProgress"></progress-bar>
 
+</ion-header>
+
+<ion-content sc>
   <ion-slides #slides>
 
     <ion-slide>
@@ -21,18 +21,22 @@
       <h1>{{page.title}}</h1>
       <h5>{{page.text}}</h5>
 
-      <ion-list radio-group [(ngModel)]="currentSelectedValue">
-        <ion-item *ngFor="let answer of page.answers; let j = index">
-          <ion-radio [value]="answer.value"></ion-radio>
-          <ion-label>{{answer.text}}</ion-label>
+      <ion-list #list radio-group [(ngModel)]="currentSelectedValue" *ngIf="page.answers[0].type === 'radio'">
+        <ion-item *ngFor="let answer of page.answers; let j = index" (click)="openTextField(answer)">
+          <ion-radio (click)="openTextField(answer)" [value]="answer.value"></ion-radio>
+          <ion-label (click)="openTextField(answer)">{{answer.text}}</ion-label>
         </ion-item>
       </ion-list>
 
-      <!--[attr.disabled]="!currentSelectedValue"-->
+      <div style="margin-bottom: 120px" *ngIf="page.answers[0].type === 'input_number'">
+        <ion-item>
+          <ion-label>{{page.answers[0].text}}</ion-label>
+          <ion-input type="number" [(ngModel)]="currentSelectedValue"></ion-input>
+        </ion-item>
+      </div>
 
       <button ion-button [disabled]="!currentSelectedValue" (click)="nextSlide()" #nextButton>Next</button>
     </ion-slide>
 
   </ion-slides>
-
 </ion-content>
