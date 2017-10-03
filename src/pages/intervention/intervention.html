@@ -8,12 +8,23 @@
 
 <ion-content>
 
-  <ion-label> {{'INTEVENTION_ALERT' | translate}}</ion-label>
+  <ion-item class="pad-50" text-wrap>
+    <ion-label>{{'INTERVENTION_ALERT' | translate}}</ion-label>
+    <ion-toggle [(ngModel)]="alertActive" (ionChange)="updateAlertActivation()"></ion-toggle>
+  </ion-item>
 
-  <ion-datetime  displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="alertTime"></ion-datetime>
+  <ion-item class="pad-50" text-wrap *ngIf="alertActive">
+    <ion-label>{{'INTERVENTION_TIME' | translate}}</ion-label>
+    <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [(ngModel)]="alertTime"
+                  (ionChange)="updateAlertTime()"></ion-datetime>
+  </ion-item>
 
-  <ion-toggle checked="false" [(ngModel)]="alertActive"></ion-toggle>
 
-  <button ion-button round large>Primary Round</button>
+  <ion-item text-wrap>
+    <ion-label>{{'INTERVENTION_BUTTON' | translate}}</ion-label>
+  </ion-item>
+  <ion-item>
+    <button ion-button round large [disabled]="!interventionReadyTime || !interventionReadyGroup" (click)="startIntervention()" >{{'INTERVENTION_BUTTON_LABEL' | translate}}</button>
+  </ion-item>
 
 </ion-content>

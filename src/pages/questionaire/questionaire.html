@@ -4,12 +4,12 @@
     <ion-title>{{ 'QUESTIONAIRE_TITLE' | translate }}</ion-title>
   </ion-navbar>
 
-  <progress-bar [progress]="shownProgress"></progress-bar>
+  <!--<progress-bar [progress]="shownProgress"></progress-bar>-->
 
 </ion-header>
 
 <ion-content sc>
-  <ion-slides #slides>
+  <ion-slides #slides [pager]="true" paginationType="progress">
 
     <ion-slide>
       <h1>{{questionaire.title}}</h1>
@@ -22,9 +22,9 @@
       <h5>{{page.text}}</h5>
 
       <ion-list #list radio-group [(ngModel)]="currentSelectedValue" *ngIf="page.answers[0].type === 'radio'">
-        <ion-item *ngFor="let answer of page.answers; let j = index" (click)="openTextField(answer)">
-          <ion-radio (click)="openTextField(answer)" [value]="answer.value"></ion-radio>
-          <ion-label (click)="openTextField(answer)">{{answer.text}}</ion-label>
+        <ion-item *ngFor="let answer of page.answers; let j = index" (click)="openTextField(answer, page.title)">
+          <ion-radio (click)="openTextField(answer, page.title)" [value]="answer.value"></ion-radio>
+          <ion-label (click)="openTextField(answer, page.title)">{{answer.text}}</ion-label>
         </ion-item>
       </ion-list>
 

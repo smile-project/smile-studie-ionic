@@ -1,0 +1,33 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'INTERVENTION_TITLE' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-item class="pad-25" text-wrap>
+    <ion-label>{{'INTERVENTION_GROUP' + userGroup +'_TEXT' | translate}}</ion-label>
+  </ion-item>
+
+  <form (submit)="submitIntervention()" [formGroup]="interventionForm" name="interventionForm">
+    <ion-item class="pad-25" text-wrap>
+      <ion-textarea type="text" rows="4" formControlName="input1" placeholder="{{'INTERVENTION_INPUT1' | translate}}"></ion-textarea>
+    </ion-item>
+
+    <ion-item class="pad-25" text-wrap>
+      <ion-textarea type="text" rows="4" formControlName="input2" placeholder="{{'INTERVENTION_INPUT2' | translate}}"></ion-textarea>
+    </ion-item>
+
+    <ion-item class="pad-25" text-wrap>
+      <ion-textarea type="text" rows="4" formControlName="input3" placeholder="{{'INTERVENTION_INPUT3' | translate}}"></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <button ion-button round large type="submit">{{'INTERVENTION_ACTION_SUBMIT' | translate}}</button>
+    </ion-item>
+  </form>
+
+</ion-content>

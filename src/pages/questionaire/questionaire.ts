@@ -1,12 +1,10 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {
+  AlertController,
   Button, Keyboard, List, ModalController, NavController, NavParams, Slides,
   ToastController
 } from "ionic-angular";
-import {TranslateService} from "@ngx-translate/core";
 import {SmileQueryService} from "../../services/SmileQueryService";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {TextModal} from "../text.modal/text.modal";
 import {InterventionPage} from "../intervention/intervention";
 @Component({
   selector: 'questionaire-page',
@@ -58,7 +56,7 @@ export class QuestionairePage implements OnInit {
 
   constructor(public navCtr: NavController,
               public navParams: NavParams,
-              public modalCtrl: ModalController,
+              public alertCtrl: AlertController,
               public smileQueryService: SmileQueryService) {
   }
 
@@ -75,7 +73,7 @@ export class QuestionairePage implements OnInit {
     });
 
     this.slides.lockSwipes(true);
-    this.slides.direction = 'vertical';
+    //this.slides.direction = 'vertical';
     this.updateProgress();
   }
 
@@ -122,18 +120,42 @@ export class QuestionairePage implements OnInit {
       }).type === 'radio_text';
   }
 
-  openTextField(answer: any) {
+  openTextField(answer: any, pageTitle: string) {
     if (answer.type === 'radio_text') {
-      let modal = this.modalCtrl.create(TextModal);
-      modal.onDidDismiss((input) => {
-        if (input) {
-          console.log("Received innput", input);
-          this.currentTextValue = input;
+      let alert = this.alertCtrl.create({
+        title: pageTitle,
+        subTitle: answer.text,
+        inputs: [
+          {
+            name: 'answer',
+            placeholder: 'Your answer'
+          }
+        ],
+        buttons: [{
+          text: 'Confirm',
+          handler: data => {
+            if (data.answer !== "") {
+              return data.answer;
+            } else {
+              return false;
+            }
+          }
+        },
+          {
+            text: 'Cancel',
+            role: 'cancel',
+          }]
+      });
+      alert.onDidDismiss((data: any, role:string) => {
+        console.log("Received input", data.answer);
+        if (data.answer.length > 0 && role !== "cancel") {
+          console.log("input accepted");
+          this.currentTextValue = data.answer;
         } else {
           this.currentSelectedValue = null;
         }
       });
-      modal.present();
+      alert.present();
     }
   }
 
@@ -151,7 +173,8 @@ export class QuestionairePage implements OnInit {
   }
 
   submit() {
-    if(this.submittedAlready){
+    // prevent double submissions
+    if (this.submittedAlready) {
       return
     }
     console.log("Entered answers", this.selectedAnswers);

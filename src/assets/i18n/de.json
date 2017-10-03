@@ -33,5 +33,16 @@
   "TUTORIAL_SKIP_BUTTON": "Überspringen",
   "TUTORIAL_CONTINUE_BUTTON": "Los gehts!",
   "INTERVENTION_TITLE": "Intervention!",
-  "QUESTIONAIRE_TITLE": "Fragebogen"
+  "QUESTIONAIRE_TITLE": "Fragebogen",
+  "INTERVENTION_ALERT": "Sollen wir dir eine Benachrichtigung anzeigen wenn deine Zufriedenheitsmessung bereit ist?",
+  "INTERVENTION_TIME": "Zeit deiner Benachrichtigung",
+  "INTERVENTION_BUTTON": "Klicke hier für deine Zufriedenheitsmessung. Du kannst jeden Tag ab 17:00 Uhr eine neue Messung starten",
+  "INTERVENTION_BUTTON_LABEL": "Zufriedenheitsmessung",
+  "INTERVENTION_ACTION_SUBMIT": "Abschicken",
+  "INTERVENTION_INPUT1": "Erster Eintrag",
+  "INTERVENTION_INPUT2": "Zweiter Eintrag",
+  "INTERVENTION_INPUT3": "Dritter Eintrag",
+  "INTERVENTION_GROUP0_TEXT": "Lorem ipsum für Gruppe 0. Bla bla bla bla dolor sit amet Karthago muss zerstört werden.",
+  "INTERVENTION_GROUP1_TEXT": "Lorem ipsum für Gruppe 1. Bla bla bla bla dolor sit amet Karthago muss zerstört werden.",
+  "INTERVENTION_GROUP2_TEXT": "Lorem ipsum für Gruppe 2. Bla bla bla bla dolor sit amet Karthago muss zerstört werden."
 }

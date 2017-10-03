@@ -20,7 +20,7 @@ import {SmileQueryService} from "../services/SmileQueryService";
 import {QuestionairePage} from "../pages/questionaire/questionaire";
 import {ProgressBarComponent} from "../components/progressbar.component";
 import {TermsPage} from "../pages/terms/terms";
-import {TextModal} from "../pages/text.modal/text.modal";
+import {InterventionActionPage} from "../pages/intervention-action/intervention-action";
 
 
 export function HttpLoaderFactory(http: Http) {
@@ -46,7 +46,7 @@ export function provideSettings(storage: Storage) {
     InterventionPage,
     QuestionairePage,
     ProgressBarComponent,
-    TextModal
+    InterventionActionPage
   ],
   imports: [
     BrowserModule,
@@ -75,7 +75,7 @@ export function provideSettings(storage: Storage) {
     WelcomePage,
     TutorialPage,
     QuestionairePage,
-    TextModal
+    InterventionActionPage
   ],
   providers: [
     {provide: Settings, useFactory: provideSettings, deps: [Storage]},
