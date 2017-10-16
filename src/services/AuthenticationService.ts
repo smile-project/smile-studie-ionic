@@ -11,8 +11,8 @@ import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class AuthenticationService {
-  private authUrl = 'http://10.176.86.255:8080/auth';
-  private registerUrl = 'http://10.176.86.255:8080/register';
+  private authUrl = 'https://api.smile-studie.de/auth';
+  private registerUrl = 'https://api.smile-studie.de/register';
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) {

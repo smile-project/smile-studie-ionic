@@ -6,7 +6,7 @@ import {AuthenticationService} from "./AuthenticationService";
 @Injectable()
 export class SmileQueryService {
 
-  private baseUrl = "http://10.176.86.255:8080/";
+  private baseUrl = "https://api.smile-studie.de/";
   private questionaireUrl = this.baseUrl + "questionaire";
   private questionaireAnswerUrl = this.baseUrl + "answer";
   private interventionAnswerUrl = this.baseUrl + "intervention";
