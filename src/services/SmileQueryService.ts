@@ -6,7 +6,7 @@ import {AuthenticationService} from "./AuthenticationService";
 @Injectable()
 export class SmileQueryService {
 
-  public static baseUrl = "http://[2001:a61:3182:7001:a1aa:9be6:6dae:b909]:8080/";
+  public static baseUrl = "http://192.168.178.30:8080/";
   private questionaireUrl = SmileQueryService.baseUrl + "questionaire";
   private questionaireAnswerUrl = SmileQueryService.baseUrl + "answer";
   private interventionAnswerUrl = SmileQueryService.baseUrl + "intervention";

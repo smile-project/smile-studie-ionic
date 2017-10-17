@@ -22,6 +22,8 @@ import {ProgressBarComponent} from "../components/progressbar.component";
 import {TermsPage} from "../pages/terms/terms";
 import {InterventionActionPage} from "../pages/intervention-action/intervention-action";
 
+import { LocalNotifications } from '@ionic-native/local-notifications';
+
 
 export function HttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -82,6 +84,7 @@ export function provideSettings(storage: Storage) {
     StatusBar,
     SplashScreen,
     AuthenticationService,
+    LocalNotifications,
     SmileQueryService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

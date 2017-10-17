@@ -1,12 +1,11 @@
 import {Component, OnInit} from "@angular/core";
 import {NavController} from "ionic-angular";
-import {TranslateService} from "@ngx-translate/core";
-import {Settings} from "../../providers/settings";
 import {SmileQueryService} from "../../services/SmileQueryService";
 import {AuthenticationService} from "../../services/AuthenticationService";
 import {WelcomePage} from "../welcome/welcome";
 import {QuestionairePage} from "../questionaire/questionaire";
 import {InterventionActionPage} from "../intervention-action/intervention-action";
+import {LocalNotifications} from "@ionic-native/local-notifications";
 @Component({
   selector: 'intervention-page',
   templateUrl: 'intervention.html'
@@ -20,7 +19,8 @@ export class InterventionPage implements OnInit {
 
   constructor(public navCtrl: NavController,
               public smileQueryService: SmileQueryService,
-              public authenticationService: AuthenticationService) {
+              public authenticationService: AuthenticationService,
+              private localNotifications: LocalNotifications) {
 
     this.getLocalstorageValues();
   }
@@ -59,10 +59,10 @@ export class InterventionPage implements OnInit {
       this.alertTime = time;
     } else {
       // uninitialized
-
+//
       let newDate = new Date();
-      newDate.setHours(17);
-      newDate.setMinutes(0);
+      newDate.setUTCHours(17);
+      newDate.setUTCMinutes(0);
       this.alertTime = (newDate).toISOString();
       this.updateAlertTime();
     }
@@ -71,9 +71,11 @@ export class InterventionPage implements OnInit {
   private handleLastInterventionTime(lastIntervention: string) {
     if (lastIntervention) {
       let lastInterventionTime = Date.parse(lastIntervention);
+      lastInterventionTime.toString()
       //TODO check if it is past 17:00 the next day
       this.interventionReadyTime = true;
     } else {
+      //TODO ask server when last intervention happened
       this.interventionReadyTime = true;
     }
   }
@@ -96,10 +98,22 @@ export class InterventionPage implements OnInit {
 
   updateAlertActivation() {
     localStorage.setItem('alertActive', String(this.alertActive));
+    this.setNotification();
   }
 
   updateAlertTime() {
     localStorage.setItem('alertTime', this.alertTime);
+    this.setNotification();
+  }
+
+  setNotification() {
+    console.log(this.localNotifications);
+    this.localNotifications.schedule({
+      text: 'Deine Intervention für heute ist bereit!',
+      title: "Smile Studie",
+      //TODO icon doesn't work :(
+      icon: "https://smile-studie.de/static/images/favicon.ico"
+    })
   }
 
   private checkForQuestionaire() {
