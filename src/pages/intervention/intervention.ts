@@ -59,11 +59,13 @@ export class InterventionPage implements OnInit {
       this.alertTime = time;
     } else {
       // uninitialized
-      this.alertTime = (new Date()).toISOString();
+
+      let newDate = new Date();
+      newDate.setHours(17);
+      newDate.setMinutes(0);
+      this.alertTime = (newDate).toISOString();
       this.updateAlertTime();
     }
-
-
   }
 
   private handleLastInterventionTime(lastIntervention: string) {
@@ -74,7 +76,6 @@ export class InterventionPage implements OnInit {
     } else {
       this.interventionReadyTime = true;
     }
-
   }
 
   private handleUserGroup(userGroup: string) {

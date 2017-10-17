@@ -8,21 +8,21 @@
 
 
 <ion-content>
-  <form (submit)="doLogin()">
+  <form [formGroup]="loginForm" (submit)="doLogin()">
     <ion-list>
 
       <ion-item>
         <ion-label fixed>{{ 'USERNAME' | translate }}</ion-label>
-        <ion-input type="text" [(ngModel)]="account.username" name="username" required></ion-input>
+        <ion-input type="email" formControlName="email"></ion-input>
       </ion-item>
 
       <ion-item>
         <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password" required></ion-input>
+        <ion-input type="password" formControlName="password"></ion-input>
       </ion-item>
 
       <div padding>
-        <button ion-button color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
+        <button [disabled]="loginForm.invalid" type="submit" ion-button color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
       </div>
 
     </ion-list>

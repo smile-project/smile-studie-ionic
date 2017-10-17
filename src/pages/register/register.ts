@@ -1,19 +1,16 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {TranslateService} from "@ngx-translate/core";
 import {NavController, ToastController} from "ionic-angular";
 import {TutorialPage} from "../tutorial/tutorial";
 import {AuthenticationService} from "../../services/AuthenticationService";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 @Component({
   selector: 'register-page',
   templateUrl: 'register.html'
 })
-export class RegisterPage {
+export class RegisterPage implements OnInit {
 
-  account: {
-    email: string, password: string
-  } = {
-    email: '', password: ''
-  };
+  registrationForm: FormGroup;
 
   private signupErrorString: string;
 
@@ -25,25 +22,32 @@ export class RegisterPage {
     this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
       this.signupErrorString = value;
     })
-
   };
 
+  ngOnInit() {
+    this.registrationForm = new FormGroup({
+      'email': new FormControl('', [Validators.required, Validators.email]),
+      'password': new FormControl('', Validators.required)
+    })
+  }
 
   doSignup() {
-    this.authenticationService.register(this.account.email, this.account.password).subscribe(result => {
-      if (result) {
-        //registration successful, get an auth token by logging in
-        this.authenticationService.login(this.account.email, this.account.password).subscribe(result => {
-          if (result){
-            this.navCtrl.push(TutorialPage);
-          }
-        })
-      } else {
-        this.showError(this.signupErrorString);
-      }
-    }, error => {
-      this.showError(error);
-    })
+    if (this.registrationForm.valid) {
+      this.authenticationService.register(this.registrationForm.get('email').value, this.registrationForm.get('password').value).subscribe(result => {
+        if (result) {
+          //registration successful, get an auth token by logging in
+          this.authenticationService.login(this.registrationForm.get('email').value, this.registrationForm.get('password').value).subscribe(result => {
+            if (result) {
+              this.navCtrl.push(TutorialPage);
+            }
+          })
+        } else {
+          this.showError(this.signupErrorString);
+        }
+      }, error => {
+        this.showError(error);
+      })
+    }
   }
 
   showError(error: string) {

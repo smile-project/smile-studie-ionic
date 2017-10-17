@@ -1,20 +1,18 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {NavController, ToastController} from "ionic-angular";
 import {TranslateService} from '@ngx-translate/core';
 import {TutorialPage} from "../tutorial/tutorial";
 import {AuthenticationService} from "../../services/AuthenticationService";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 
 @Component({
   selector: 'login-page',
   templateUrl: 'login.html'
 })
-export class LoginPage {
-  account: {
-    username: string, password: string
-  } = {
-    username: '', password: ''
-  };
+export class LoginPage implements OnInit {
+
+  loginForm: FormGroup;
 
   private loginErrorString: string;
 
@@ -29,18 +27,26 @@ export class LoginPage {
 
   }
 
+  ngOnInit() {
+    this.loginForm = new FormGroup({
+      'email': new FormControl('', [Validators.required, Validators.email]),
+      'password': new FormControl('', Validators.required)
+    })
+  }
+
   doLogin() {
-    console.log(this.account);
-    this.authenticationService.login(this.account.username, this.account.password)
-      .subscribe(result => {
-        if (result){
-          this.navCtrl.push(TutorialPage)
-        } else {
-          this.showError(this.loginErrorString);
-        }
-      }, error => {
-        this.showError(error);
-      })
+    if (this.loginForm.valid) {
+      this.authenticationService.login(this.loginForm.get('email').value, this.loginForm.get('password').value)
+        .subscribe(result => {
+          if (result) {
+            this.navCtrl.push(TutorialPage)
+          } else {
+            this.showError(this.loginErrorString);
+          }
+        }, error => {
+          this.showError(error);
+        })
+    }
   }
 
   showError(error: string) {
