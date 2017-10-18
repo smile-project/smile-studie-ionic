@@ -23,6 +23,7 @@ import {TermsPage} from "../pages/terms/terms";
 import {InterventionActionPage} from "../pages/intervention-action/intervention-action";
 
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 export function HttpLoaderFactory(http: Http) {

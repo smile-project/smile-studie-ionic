@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {NavController} from "ionic-angular";
 import {SmileQueryService} from "../../services/SmileQueryService";
+import {InterventionPage} from "../intervention/intervention";
 
 @Component({
   selector: 'intervention-action',
@@ -36,7 +37,7 @@ export class InterventionActionPage {
           if (result) {
             console.log("Good result!", result);
             localStorage.removeItem('nextIntervention');
-            this.navCtrl.pop();
+            this.navCtrl.setRoot(InterventionPage);
           } else {
             console.log("Bad result!", result);
             //TODO something went wrong
