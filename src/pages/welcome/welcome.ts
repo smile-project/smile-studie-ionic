@@ -18,7 +18,11 @@ export class WelcomePage implements OnInit {
 
   ngOnInit() {
     if (this.authenticationService.getToken()) {
-      this.navCtrl.setRoot(InterventionPage);
+      if(localStorage.getItem('termsAccepted')) {
+        this.navCtrl.setRoot(InterventionPage);
+      } else{
+        this.navCtrl.setRoot(TutorialPage);
+      }
     }
   }
 

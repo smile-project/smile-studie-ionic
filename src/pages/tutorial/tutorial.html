@@ -5,7 +5,7 @@
 
 <ion-content no-bounce class="content-bg">
 
-  <ion-slides pager="true" #slider>
+  <ion-slides pager="true" #slider class="transparent-bg">
 
     <ion-slide>
       <img src="" class="slide-image"/>
@@ -15,11 +15,11 @@
       <p innerHtml="{{'TUTORIAL_SLIDE1_DESCRIPTION2' | translate}}"></p>
 
       <form (submit)="onTermsConfirmation()">
-        <ion-item>
-          <ion-label>{{'TUTORIAL_SLIDE1_TERMS_CHECKBOX' | translate}}</ion-label>
+        <ion-item class="transparent-bg">
+          <ion-label class="transparent-bg">{{'TUTORIAL_SLIDE1_TERMS_CHECKBOX' | translate}}</ion-label>
           <ion-checkbox [(ngModel)]="termsAccepted" [disabled]="wentForward" name="termsAccepted"></ion-checkbox>
         </ion-item>
-        <button ion-button type="submit" [disabled]="!termsAccepted || wentForward">{{'ACCEPT' | translate}}</button>
+        <button class="quokka-button" ion-button type="submit" [disabled]="!termsAccepted || wentForward">{{'ACCEPT' | translate}}</button>
       </form>
     </ion-slide>
 

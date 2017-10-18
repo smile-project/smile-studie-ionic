@@ -8,21 +8,21 @@
 
 
 <ion-content class="content-bg">
-  <form [formGroup]="registrationForm" (submit)="doSignup()">
-    <ion-list>
+  <form [formGroup]="registrationForm" class="transparent-bg" (submit)="doSignup()">
+    <ion-list class="transparent-bg">
 
-      <ion-item>
-        <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
-        <ion-input formControlName="email" type="email"></ion-input>
+      <ion-item class="transparent-bg">
+        <ion-label class="transparent-bg" fixed>{{ 'EMAIL' | translate }}</ion-label>
+        <ion-input class="transparent-bg" formControlName="email" type="email"></ion-input>
       </ion-item>
 
-      <ion-item>
-        <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
-        <ion-input formControlName="password" type="password"></ion-input>
+      <ion-item class="transparent-bg">
+        <ion-label class="transparent-bg" fixed>{{ 'PASSWORD' | translate }}</ion-label>
+        <ion-input class="transparent-bg" formControlName="password" type="password"></ion-input>
       </ion-item>
 
       <div padding>
-        <button [disabled]="registrationForm.invalid" ion-button type="submit" color="primary" block>{{ 'SIGNUP_BUTTON' | translate }}</button>
+        <button class="quokka-button" [disabled]="registrationForm.invalid" ion-button type="submit" color="primary" block>{{ 'SIGNUP_BUTTON' | translate }}</button>
       </div>
 
     </ion-list>

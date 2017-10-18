@@ -12,9 +12,12 @@ import {SmileQueryService} from "./SmileQueryService";
 
 @Injectable()
 export class AuthenticationService {
+
   private authUrl = SmileQueryService.baseUrl + "auth";
   private registerUrl = SmileQueryService.baseUrl + "register";
   private headers = new Headers({'Content-Type': 'application/json'});
+
+  unknownServerError = "Server zur Zeit nicht erreichbar, bitte überprüfe deine Internetverbindung";
 
   constructor(private http: Http) {
   }
@@ -39,7 +42,7 @@ export class AuthenticationService {
           Observable.throw(response.statusText);
         }
       }).catch((error: any) => {
-        return Observable.throw(error.json().error || 'Server error')
+        return Observable.throw(error.json().error || this.unknownServerError)
       });
 
 
@@ -53,7 +56,7 @@ export class AuthenticationService {
       .map((response: Response) => {
         return response.status == 200;
       }).catch((error: any) =>
-        Observable.throw(error.json().error || 'Server error')
+        Observable.throw(error.json().error || this.unknownServerError)
       );
   }
 

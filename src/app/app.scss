@@ -25,7 +25,20 @@
   padding-bottom: 25px;
 }
 
-.content-bg{
+.content-bg {
   background: url('../assets/img/background.png') no-repeat;
   background-size: cover;
+}
+
+.transparent-bg {
+  background-color: rgba(0, 0, 0, 0);
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.quokka-button{
+  background-color: rgba(0, 0, 0, 0);
+  color: white !important;
+  font-weight: bold !important;
+  border-radius: 25px;
 }

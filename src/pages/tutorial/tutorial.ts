@@ -76,6 +76,7 @@ export class TutorialPage implements OnInit {
 
   onTermsConfirmation() {
     if(this.termsAccepted){
+      localStorage.setItem('termsAccepted', "true");
       this.slider.lockSwipes(false);
       this.slider.slideNext();
       this.wentForward = true;

@@ -11,6 +11,7 @@ export class SmileQueryService {
   private questionaireAnswerUrl = SmileQueryService.baseUrl + "answer";
   private interventionAnswerUrl = SmileQueryService.baseUrl + "intervention";
   private interventionGroupUrl = SmileQueryService.baseUrl + "interventionGroup";
+  private nextInterventionTimeUrl = SmileQueryService.baseUrl + "nextIntervention";
 
   constructor(private http: Http,
               private authenticationService: AuthenticationService) {
@@ -35,6 +36,12 @@ export class SmileQueryService {
     return this.http.post(this.questionaireAnswerUrl, body, {headers: this.buildAuthHeader()}).map(this.sendFunction)
       .catch(this.catchFunction);
   }
+
+  getNextInterventionTime(): Observable<any> {
+    return this.http.get(this.nextInterventionTimeUrl, {headers: this.buildAuthHeader()}).map(this.sendFunction)
+      .catch(this.catchFunction);
+  }
+
 
   sendFunction(response: Response) {
     if (response.status == 200) {

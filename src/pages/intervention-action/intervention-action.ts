@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {NavController} from "ionic-angular";
 import {SmileQueryService} from "../../services/SmileQueryService";
@@ -35,7 +35,7 @@ export class InterventionActionPage {
       }).subscribe((result) => {
           if (result) {
             console.log("Good result!", result);
-            localStorage.setItem('lastInterventionSubmission', new Date().toISOString());
+            localStorage.removeItem('nextIntervention');
             this.navCtrl.pop();
           } else {
             console.log("Bad result!", result);
