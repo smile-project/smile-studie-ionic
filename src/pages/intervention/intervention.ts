@@ -6,6 +6,7 @@ import {WelcomePage} from "../welcome/welcome";
 import {QuestionairePage} from "../questionaire/questionaire";
 import {InterventionActionPage} from "../intervention-action/intervention-action";
 import {LocalNotifications} from "@ionic-native/local-notifications";
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
 @Component({
   selector: 'intervention-page',
   templateUrl: 'intervention.html'
@@ -21,7 +22,12 @@ export class InterventionPage implements OnInit {
   constructor(public navCtrl: NavController,
               public smileQueryService: SmileQueryService,
               public authenticationService: AuthenticationService,
-              private localNotifications: LocalNotifications) {
+              private localNotifications: LocalNotifications,
+              private screenOrientation: ScreenOrientation) {
+    try {
+      screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
+    } catch (error) {
+    }
   }
 
   ngOnInit(): void {
@@ -121,24 +127,32 @@ export class InterventionPage implements OnInit {
 
   setNotification() {
     if (this.alertActive && this.alertDate) {
+      let date = new Date();
+
+      if (date > this.alertDate) {
+        let nextDayDate = new Date(this.alertDate.getTime() + 24 * 60 * 60 * 1000);
+        this.alertDate = nextDayDate;
+        localStorage.setItem('alertDate', nextDayDate.toISOString());
+      }
+
       this.localNotifications.clear(73468);
       this.localNotifications.schedule({
         id: 73468,
         text: 'Deine Intervention für heute ist bereit!',
         title: "Smile Studie",
         //TODO icon doesn't work :(
-        //TODO next day not current day
-        icon: "http://sciactive.com/pnotify/includes/github-icon.png",
-        smallIcon: "http://sciactive.com/pnotify/includes/github-icon.png",
-        //at: this.alertDate
-        //firstAt: this.alertDate,
-        //every: "day"
+        firstAt: this.alertDate,
+        every: "day"
       })
     }
   }
 
   //TODO studie done page
   //TODO depression warning page
+  //TODO erklärung falls man grp 3 ist
+  //TODO erklärung warum button disabled ist
+  //TODO after study is done -> change group to 1?
+  //TODO notification für eine woche gruppe 3
 
   private checkForQuestionaire() {
     this.smileQueryService.getQuestionaire().subscribe((result) => {

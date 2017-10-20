@@ -6,6 +6,8 @@ import {
 } from "ionic-angular";
 import {SmileQueryService} from "../../services/SmileQueryService";
 import {InterventionPage} from "../intervention/intervention";
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
+import {InfoPage} from "../info/info";
 @Component({
   selector: 'questionaire-page',
   templateUrl: 'questionaire.html',
@@ -57,7 +59,12 @@ export class QuestionairePage implements OnInit {
   constructor(public navCtr: NavController,
               public navParams: NavParams,
               public alertCtrl: AlertController,
-              public smileQueryService: SmileQueryService) {
+              public smileQueryService: SmileQueryService,
+              private screenOrientation: ScreenOrientation) {
+    try {
+      screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
+    } catch (error) {
+    }
   }
 
   ngOnInit() {
@@ -146,7 +153,7 @@ export class QuestionairePage implements OnInit {
             role: 'cancel',
           }]
       });
-      alert.onDidDismiss((data: any, role:string) => {
+      alert.onDidDismiss((data: any, role: string) => {
         console.log("Received input", data.answer);
         if (data.answer.length > 0 && role !== "cancel") {
           console.log("input accepted");
@@ -180,11 +187,30 @@ export class QuestionairePage implements OnInit {
     console.log("Entered answers", this.selectedAnswers);
     this.smileQueryService.postQuestionaireAnswer(this.selectedAnswers).subscribe((result) => {
       console.log("Posting result", result);
+      if (this.shouldShowDepressionWarning()) {
+        this.navCtr.setRoot(InfoPage, {
+          text: "Depression warning string"
+        });
+        return;
+      }
       this.navCtr.setRoot(InterventionPage);
     }, error => {
       console.log("Posting error", error);
       this.navCtr.setRoot(InterventionPage);
     });
     this.submittedAlready = true;
+  }
+
+  shouldShowDepressionWarning() {
+    if (this.questionaire.id == 6) {
+      let sum = 0;
+      this.selectedAnswers.forEach(selected => {
+        sum += selected.valueAnswer;
+      });
+      if (sum >= 50) {
+        return true;
+      }
+    }
+    return false;
   }
 }

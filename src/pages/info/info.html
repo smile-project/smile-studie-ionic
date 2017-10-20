@@ -1,0 +1,16 @@
+<ion-header no-shadow>
+  <ion-navbar>
+    <ion-title>
+      {{'INFO' | translate}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="content-bg">
+
+  <input type="text" disabled [(ngModel)]="text">
+  <h1 class="transparent-bg"></h1>
+
+  <button ion-button round large class="quokka-button" (click)="okay()">Okay</button>
+
+</ion-content>

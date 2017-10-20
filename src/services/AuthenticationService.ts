@@ -17,7 +17,7 @@ export class AuthenticationService {
   private registerUrl = SmileQueryService.baseUrl + "register";
   private headers = new Headers({'Content-Type': 'application/json'});
 
-  unknownServerError = "Server zur Zeit nicht erreichbar, bitte überprüfe deine Internetverbindung";
+  unknownServerError = "Server zur Zeit nicht erreichbar, bitte überprüfe deine Internetverbindung.";
 
   constructor(private http: Http) {
   }

@@ -13,30 +13,21 @@ import {RegisterPage} from "../pages/register/register";
 import {WelcomePage} from "../pages/welcome/welcome";
 import {TutorialPage} from "../pages/tutorial/tutorial";
 import {InterventionPage} from "../pages/intervention/intervention";
-import {Settings} from "../providers/settings";
 import {IonicStorageModule, Storage} from "@ionic/storage";
 import {AuthenticationService} from "../services/AuthenticationService";
 import {SmileQueryService} from "../services/SmileQueryService";
 import {QuestionairePage} from "../pages/questionaire/questionaire";
-import {ProgressBarComponent} from "../components/progressbar.component";
 import {TermsPage} from "../pages/terms/terms";
 import {InterventionActionPage} from "../pages/intervention-action/intervention-action";
 
-import { LocalNotifications } from '@ionic-native/local-notifications';
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {LocalNotifications} from '@ionic-native/local-notifications';
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
+import {InfoPage} from "../pages/info/info";
 
 
 export function HttpLoaderFactory(http: Http) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
-export function provideSettings(storage: Storage) {
-  return new Settings(storage, {
-    alertTime: false,
-    alertActive: false
-  })
-}
-
 
 @NgModule({
   declarations: [
@@ -46,9 +37,9 @@ export function provideSettings(storage: Storage) {
     RegisterPage,
     WelcomePage,
     TutorialPage,
+    InfoPage,
     InterventionPage,
     QuestionairePage,
-    ProgressBarComponent,
     InterventionActionPage
   ],
   imports: [
@@ -78,14 +69,15 @@ export function provideSettings(storage: Storage) {
     WelcomePage,
     TutorialPage,
     QuestionairePage,
+    InfoPage,
     InterventionActionPage
   ],
   providers: [
-    {provide: Settings, useFactory: provideSettings, deps: [Storage]},
     StatusBar,
     SplashScreen,
     AuthenticationService,
     LocalNotifications,
+    ScreenOrientation,
     SmileQueryService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {NavController, ToastController} from "ionic-angular";
 import {SmileQueryService} from "../../services/SmileQueryService";
 import {InterventionPage} from "../intervention/intervention";
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
 
 @Component({
   selector: 'intervention-action',
@@ -16,7 +17,12 @@ export class InterventionActionPage {
 
   constructor(private navCtrl: NavController,
               private smileQueryService: SmileQueryService,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              private screenOrientation: ScreenOrientation) {
+    try {
+      screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
+    } catch (error) {
+    }
     this.interventionForm = new FormGroup({
       'input1': new FormControl('', Validators.required),
       'input2': new FormControl('',),
@@ -42,14 +48,14 @@ export class InterventionActionPage {
           } else {
             console.log("Bad result!", result);
             this.toastCtrl.create({
-              message: "Server zur Zeit nicht erreichbar, bitte überprüfe deine Internetverbindung",
+              message: "Server zur Zeit nicht erreichbar, bitte überprüfe deine Internetverbindung.",
               duration: 3000
             }).present();
           }
         }, error => {
           console.log("Error result!");
           this.toastCtrl.create({
-            message: "Server zur Zeit nicht erreichbar, bitte überprüfe deine Internetverbindung",
+            message: "Server zur Zeit nicht erreichbar, bitte überprüfe deine Internetverbindung.",
             duration: 3000
           }).present();
           this.navCtrl.setRoot(InterventionPage);

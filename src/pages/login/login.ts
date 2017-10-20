@@ -4,6 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {TutorialPage} from "../tutorial/tutorial";
 import {AuthenticationService} from "../../services/AuthenticationService";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ScreenOrientation} from "@ionic-native/screen-orientation";
 
 
 @Component({
@@ -19,8 +20,12 @@ export class LoginPage implements OnInit {
   constructor(public navCtrl: NavController,
               public translateService: TranslateService,
               public authenticationService: AuthenticationService,
-              public toastCtrl: ToastController) {
-
+              public toastCtrl: ToastController,
+              private screenOrientation: ScreenOrientation) {
+    try {
+      screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
+    } catch (error) {
+    }
     this.translateService.get('LOGIN_ERROR').subscribe((value) => {
       this.loginErrorString = value;
     });
