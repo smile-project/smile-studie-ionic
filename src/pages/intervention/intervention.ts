@@ -14,6 +14,7 @@ export class InterventionPage implements OnInit {
 
   alertTime: string;
   alertActive: boolean;
+  alertDate: Date;
   interventionReadyTime: boolean;
   interventionReadyGroup: boolean;
 
@@ -30,30 +31,23 @@ export class InterventionPage implements OnInit {
 
   getLocalstorageValues() {
     let active = localStorage.getItem('alertActive');
-    let time = localStorage.getItem('alertTime');
-    let nextIntervention = localStorage.getItem('nextIntervention');
+    let date = localStorage.getItem('alertDate');
     let userGroup = localStorage.getItem('userGroup');
 
     this.handleNotificationActive(active);
-    this.handleAlertTime(time);
-    this.handleNextInterventionTime(nextIntervention);
+    this.handleAlertTime(date);
+    this.handleNextInterventionTime();
     this.handleUserGroup(userGroup);
   }
 
   private handleNotificationActive(active: string) {
     if (active == 'true') {
       this.alertActive = true;
-    } else if (active == 'false') {
-      this.alertActive = false;
-    } else {
-      // unitialized
-      this.alertActive = true;
-      this.updateAlertActivation();
-    }
-
+    } else this.alertActive = active != 'false';
+    this.updateAlertActivation();
   }
 
-  private createISOString(date: Date) {
+  private static createISOString(date: Date) {
     // i absolutely hate this
     let day = date.getDate() >= 1 && date.getDate() <= 9 ? "0" + date.getDate() : date.getDate();
     let month = (date.getMonth() + 1) >= 1 && (date.getMonth() + 1 ) <= 9 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
@@ -66,47 +60,34 @@ export class InterventionPage implements OnInit {
       seconds + "Z";
   }
 
-  private handleAlertTime(time: string) {
-    if (time) {
-      // get the hours of the time and set it to
-      // the next alarm time
-      let savedTime = new Date(time);
-      let currentTime = new Date();
-      this.alertTime = this.createISOString(savedTime);
+  private handleAlertTime(date: string) {
+    if (date) {
+      let gmtDate = new Date(date);
+      this.alertTime = InterventionPage.createISOString(gmtDate);
+      this.alertDate = gmtDate;
     } else {
-      // uninitialized -> today 17:00
-      //TODO next day if past 17
-      //TODO what happens if next day has no intervention (group 3)
       let newDate = new Date();
-      newDate.setHours(17);
-      newDate.setMinutes(0);
       newDate.setSeconds(0);
-      this.alertTime = this.createISOString(newDate);
-      this.updateAlertTime();
+      newDate.setMinutes(0);
+      newDate.setHours(17);
+      this.alertTime = InterventionPage.createISOString(newDate);
+      this.alertDate = newDate;
+      localStorage.setItem('alertDate', newDate.toISOString());
     }
+    this.setNotification();
   }
 
-  private handleNextInterventionTime(nextIntervention: string) {
-    if (nextIntervention) {
-      let nextDate = new Date(Number(nextIntervention));
+
+  private handleNextInterventionTime() {
+    this.smileQueryService.getNextInterventionTime().subscribe(result => {
+      let nextDate = new Date(result);
       let currentDate = new Date();
       let timeHasPassed = currentDate > nextDate;
 
       if (timeHasPassed) {
         this.interventionReadyTime = true;
       }
-    } else {
-      this.smileQueryService.getNextInterventionTime().subscribe(result => {
-        localStorage.setItem('nextIntervention', result);
-        let nextDate = new Date(result);
-        let currentDate = new Date();
-        let timeHasPassed = currentDate > nextDate;
-
-        if (timeHasPassed) {
-          this.interventionReadyTime = true;
-        }
-      })
-    }
+    });
   }
 
   private handleUserGroup(userGroup: string) {
@@ -128,27 +109,36 @@ export class InterventionPage implements OnInit {
   }
 
   updateAlertTime() {
-    let updatedDate = new Date(this.alertTime);
-    updatedDate.getUTCHours();
-    updatedDate.getUTCMinutes();
+    let utcDate = new Date(this.alertTime);
+    let offset = utcDate.getTimezoneOffset() / 60;
+    let gmtDate = new Date(utcDate.getTime() + offset * 60 * 60 * 1000);
 
-    localStorage.setItem('alertTime', this.alertTime);
+    this.alertTime = InterventionPage.createISOString(gmtDate);
+    this.alertDate = gmtDate;
+    localStorage.setItem('alertDate', gmtDate.toISOString());
     this.setNotification();
   }
 
   setNotification() {
-    if (this.alertActive && this.alertTime) {
+    if (this.alertActive && this.alertDate) {
       this.localNotifications.clear(73468);
       this.localNotifications.schedule({
         id: 73468,
         text: 'Deine Intervention für heute ist bereit!',
         title: "Smile Studie",
         //TODO icon doesn't work :(
-        icon: "https://smile-studie.de/static/images/favicon.ico",
-        at: new Date(this.alertTime)
+        //TODO next day not current day
+        icon: "http://sciactive.com/pnotify/includes/github-icon.png",
+        smallIcon: "http://sciactive.com/pnotify/includes/github-icon.png",
+        //at: this.alertDate
+        //firstAt: this.alertDate,
+        //every: "day"
       })
     }
   }
+
+  //TODO studie done page
+  //TODO depression warning page
 
   private checkForQuestionaire() {
     this.smileQueryService.getQuestionaire().subscribe((result) => {

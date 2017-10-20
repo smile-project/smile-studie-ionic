@@ -41,34 +41,7 @@ export class TutorialPage implements OnInit {
     ]).subscribe(
       (values) => {
         console.log('Loaded values', values);
-        this.slides = [
-          /*
-           {
-           title: values.TUTORIAL_SLIDE1_TITLE,
-           description: values.TUTORIAL_SLIDE1_DESCRIPTION,
-           image: '',
-           },
-           {
-           title: values.TUTORIAL_SLIDE2_TITLE,
-           description: values.TUTORIAL_SLIDE2_DESCRIPTION,
-           image: ''
-           },
-           {
-           title: values.TUTORIAL_SLIDE3_TITLE,
-           description: values.TUTORIAL_SLIDE3_DESCRIPTION,
-           image: ''
-           },
-           {
-           title: values.TUTORIAL_SLIDE4_TITLE,
-           description: values.TUTORIAL_SLIDE4_DESCRIPTION,
-           image: ''
-           },
-           {
-           title: values.TUTORIAL_SLIDE5_TITLE,
-           description: values.TUTORIAL_SLIDE5_DESCRIPTION,
-           image: ''
-           }
-           */];
+        this.slides = [];
       });
 
     this.slider.lockSwipes(true);
@@ -84,13 +57,14 @@ export class TutorialPage implements OnInit {
   }
 
   openTerms(){
-    this.navCtrl.setRoot(TermsPage, {}, {
+    this.navCtrl.push(TermsPage, {}, {
       animate: true,
       direction: 'forward'
     })
   }
 
   startApp() {
+    localStorage.setItem('tutorialAccepted', "true");
     this.navCtrl.setRoot(InterventionPage, {}, {
       animate: true,
       direction: 'forward'

@@ -50,6 +50,7 @@ export class SmileQueryService {
         return response.json();
       } catch (err) {
         // json parse error in case the body is empty
+        console.log("Status 200 but empty body", response);
       }
       return true;
     } else {

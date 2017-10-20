@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {NavController} from "ionic-angular";
+import {NavController, ToastController} from "ionic-angular";
 import {SmileQueryService} from "../../services/SmileQueryService";
 import {InterventionPage} from "../intervention/intervention";
 
@@ -15,7 +15,8 @@ export class InterventionActionPage {
   userGroup: number;
 
   constructor(private navCtrl: NavController,
-              private smileQueryService: SmileQueryService) {
+              private smileQueryService: SmileQueryService,
+              private toastCtrl: ToastController) {
     this.interventionForm = new FormGroup({
       'input1': new FormControl('', Validators.required),
       'input2': new FormControl('',),
@@ -40,11 +41,18 @@ export class InterventionActionPage {
             this.navCtrl.setRoot(InterventionPage);
           } else {
             console.log("Bad result!", result);
-            //TODO something went wrong
+            this.toastCtrl.create({
+              message: "Server zur Zeit nicht erreichbar, bitte überprüfe deine Internetverbindung",
+              duration: 3000
+            }).present();
           }
         }, error => {
-          console.log("Error result!")
-          //TODO something went wrong
+          console.log("Error result!");
+          this.toastCtrl.create({
+            message: "Server zur Zeit nicht erreichbar, bitte überprüfe deine Internetverbindung",
+            duration: 3000
+          }).present();
+          this.navCtrl.setRoot(InterventionPage);
         }
       )
     }
