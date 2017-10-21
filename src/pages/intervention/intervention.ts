@@ -6,7 +6,6 @@ import {WelcomePage} from "../welcome/welcome";
 import {QuestionairePage} from "../questionaire/questionaire";
 import {InterventionActionPage} from "../intervention-action/intervention-action";
 import {LocalNotifications} from "@ionic-native/local-notifications";
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
 @Component({
   selector: 'intervention-page',
   templateUrl: 'intervention.html'
@@ -22,12 +21,7 @@ export class InterventionPage implements OnInit {
   constructor(public navCtrl: NavController,
               public smileQueryService: SmileQueryService,
               public authenticationService: AuthenticationService,
-              private localNotifications: LocalNotifications,
-              private screenOrientation: ScreenOrientation) {
-    try {
-      screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
-    } catch (error) {
-    }
+              private localNotifications: LocalNotifications) {
   }
 
   ngOnInit(): void {
@@ -93,6 +87,11 @@ export class InterventionPage implements OnInit {
       if (timeHasPassed) {
         this.interventionReadyTime = true;
       }
+    }, error => {
+      // probably 401 authorized
+      this.interventionReadyTime = false;
+      this.authenticationService.clearSavedAccount();
+      this.navCtrl.setRoot(WelcomePage);
     });
   }
 
@@ -151,8 +150,10 @@ export class InterventionPage implements OnInit {
   //TODO depression warning page
   //TODO erklärung falls man grp 3 ist
   //TODO erklärung warum button disabled ist
-  //TODO after study is done -> change group to 1?
+  //TODO after study is done -> change group to 1?, mit status=2 koppeln
+  //TODO damit aber auch gruppen im client resetten nach jedem fragebogen
   //TODO notification für eine woche gruppe 3
+  //TODO neue strings eintippseln
 
   private checkForQuestionaire() {
     this.smileQueryService.getQuestionaire().subscribe((result) => {

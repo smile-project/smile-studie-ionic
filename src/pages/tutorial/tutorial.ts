@@ -3,7 +3,6 @@ import {NavController, Slides} from "ionic-angular";
 import {TranslateService} from "@ngx-translate/core";
 import {InterventionPage} from "../intervention/intervention";
 import {TermsPage} from "../terms/terms";
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
 
 export interface Slide {
   title: string;
@@ -25,13 +24,8 @@ export class TutorialPage implements OnInit {
   wentForward: boolean;
 
   constructor(public navCtrl: NavController,
-              public translateService: TranslateService,
-              private screenOrientation: ScreenOrientation) {
-    try {
-      screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
-    } catch (error) {
-    }  }
-
+              public translateService: TranslateService) {
+  }
   ngOnInit() {
     this.translateService.get(["TUTORIAL_SLIDE1_TITLE",
       "TUTORIAL_SLIDE1_DESCRIPTION",

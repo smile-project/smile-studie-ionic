@@ -34,7 +34,6 @@
         "cordova-plugin-console": "^1.1.0",
         "cordova-plugin-device": "^1.1.6",
         "cordova-plugin-local-notifications": "git+https://github.com/katzer/cordova-plugin-local-notifications.git",
-        "cordova-plugin-screen-orientation": "^2.0.1",
         "cordova-plugin-splashscreen": "^4.0.3",
         "cordova-plugin-statusbar": "^2.2.3",
         "cordova-plugin-whitelist": "^1.3.2",
@@ -61,7 +60,6 @@
             "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
             "de.appplant.cordova.plugin.local-notification": {},
-            "cordova-plugin-screen-orientation": {}
         },
         "platforms": [
             "android"

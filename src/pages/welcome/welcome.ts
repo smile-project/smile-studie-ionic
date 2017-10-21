@@ -5,7 +5,6 @@ import {RegisterPage} from "../register/register";
 import {AuthenticationService} from "../../services/AuthenticationService";
 import {TutorialPage} from "../tutorial/tutorial";
 import {InterventionPage} from "../intervention/intervention";
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
 @Component({
   selector: 'welcome-page',
   templateUrl: 'welcome.html'
@@ -13,12 +12,7 @@ import {ScreenOrientation} from "@ionic-native/screen-orientation";
 export class WelcomePage implements OnInit {
 
   constructor(public navCtrl: NavController,
-              public authenticationService: AuthenticationService,
-              private screenOrientation: ScreenOrientation) {
-    try {
-      screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
-    } catch (error) {
-    }
+              public authenticationService: AuthenticationService) {
   };
 
   ngOnInit() {

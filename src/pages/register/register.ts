@@ -4,7 +4,6 @@ import {NavController, ToastController} from "ionic-angular";
 import {TutorialPage} from "../tutorial/tutorial";
 import {AuthenticationService} from "../../services/AuthenticationService";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
 @Component({
   selector: 'register-page',
   templateUrl: 'register.html'
@@ -18,12 +17,7 @@ export class RegisterPage implements OnInit {
   constructor(public navCtrl: NavController,
               public translateService: TranslateService,
               public authenticationService: AuthenticationService,
-              public toastCtrl: ToastController,
-              private screenOrientation: ScreenOrientation) {
-    try {
-      screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
-    } catch (error) {
-    }
+              public toastCtrl: ToastController) {
     this.translateService.get('SIGNUP_ERROR').subscribe((value) => {
       this.signupErrorString = value;
     })

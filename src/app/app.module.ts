@@ -13,7 +13,7 @@ import {RegisterPage} from "../pages/register/register";
 import {WelcomePage} from "../pages/welcome/welcome";
 import {TutorialPage} from "../pages/tutorial/tutorial";
 import {InterventionPage} from "../pages/intervention/intervention";
-import {IonicStorageModule, Storage} from "@ionic/storage";
+import {IonicStorageModule} from "@ionic/storage";
 import {AuthenticationService} from "../services/AuthenticationService";
 import {SmileQueryService} from "../services/SmileQueryService";
 import {QuestionairePage} from "../pages/questionaire/questionaire";
@@ -21,7 +21,6 @@ import {TermsPage} from "../pages/terms/terms";
 import {InterventionActionPage} from "../pages/intervention-action/intervention-action";
 
 import {LocalNotifications} from '@ionic-native/local-notifications';
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {InfoPage} from "../pages/info/info";
 
 
@@ -77,7 +76,6 @@ export function HttpLoaderFactory(http: Http) {
     SplashScreen,
     AuthenticationService,
     LocalNotifications,
-    ScreenOrientation,
     SmileQueryService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

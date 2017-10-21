@@ -1,12 +1,10 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {
   AlertController,
-  Button, Keyboard, List, ModalController, NavController, NavParams, Slides,
-  ToastController
+  Button, List, NavController, NavParams, Slides
 } from "ionic-angular";
 import {SmileQueryService} from "../../services/SmileQueryService";
 import {InterventionPage} from "../intervention/intervention";
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
 import {InfoPage} from "../info/info";
 @Component({
   selector: 'questionaire-page',
@@ -59,12 +57,7 @@ export class QuestionairePage implements OnInit {
   constructor(public navCtr: NavController,
               public navParams: NavParams,
               public alertCtrl: AlertController,
-              public smileQueryService: SmileQueryService,
-              private screenOrientation: ScreenOrientation) {
-    try {
-      screenOrientation.lock(screenOrientation.ORIENTATIONS.PORTRAIT);
-    } catch (error) {
-    }
+              public smileQueryService: SmileQueryService) {
   }
 
   ngOnInit() {

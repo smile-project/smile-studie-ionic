@@ -5,7 +5,6 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 
 import {WelcomePage} from "../pages/welcome/welcome";
 import {TranslateService} from "@ngx-translate/core";
-import {ScreenOrientation} from "@ionic-native/screen-orientation";
 @Component({
   templateUrl: 'app.html'
 })
