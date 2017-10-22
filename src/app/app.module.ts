@@ -22,6 +22,7 @@ import {InterventionActionPage} from "../pages/intervention-action/intervention-
 
 import {LocalNotifications} from '@ionic-native/local-notifications';
 import {InfoPage} from "../pages/info/info";
+import {LoadingPage} from "../pages/loading/loading";
 
 
 export function HttpLoaderFactory(http: Http) {
@@ -35,6 +36,7 @@ export function HttpLoaderFactory(http: Http) {
     TermsPage,
     RegisterPage,
     WelcomePage,
+    LoadingPage,
     TutorialPage,
     InfoPage,
     InterventionPage,
@@ -66,6 +68,7 @@ export function HttpLoaderFactory(http: Http) {
     TermsPage,
     RegisterPage,
     WelcomePage,
+    LoadingPage,
     TutorialPage,
     QuestionairePage,
     InfoPage,

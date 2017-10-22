@@ -4,6 +4,7 @@ import {TranslateService} from "@ngx-translate/core";
 import {InterventionPage} from "../intervention/intervention";
 import {TermsPage} from "../terms/terms";
 import {InfoPage} from "../info/info";
+import {LoadingPage} from "../loading/loading";
 
 export interface Slide {
   title: string;
@@ -66,7 +67,7 @@ export class TutorialPage implements OnInit {
 
   startApp() {
     localStorage.setItem('tutorialAccepted', "true");
-    this.navCtrl.setRoot(InterventionPage, {}, {
+    this.navCtrl.setRoot(LoadingPage, {}, {
       animate: true,
       direction: 'forward'
     });

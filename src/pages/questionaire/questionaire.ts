@@ -6,6 +6,7 @@ import {
 import {SmileQueryService} from "../../services/SmileQueryService";
 import {InterventionPage} from "../intervention/intervention";
 import {InfoPage} from "../info/info";
+import {LoadingPage} from "../loading/loading";
 @Component({
   selector: 'questionaire-page',
   templateUrl: 'questionaire.html',
@@ -192,15 +193,16 @@ export class QuestionairePage implements OnInit {
           'Solltest du eilig haben wende dich bitte an ein psychiatrische Notfallambulanz. ' +
           'Solltest du akute Suizid-, oder Selbstverletzungsgedanken haben, nutze bitte den Dienst der ' +
           'Telefonseelsorge unter http://www.telefonseelsorge.de. ' +
-          'Macht nichts überstürztes, wir haben dich Lieb :)'
+          'Macht nichts überstürztes, wir haben dich Lieb :)',
+          redirectTo: LoadingPage
         });
         return;
       }
 
-      this.navCtr.setRoot(InterventionPage);
+      this.navCtr.setRoot(LoadingPage);
     }, error => {
       console.log("Posting error", error);
-      this.navCtr.setRoot(InterventionPage);
+      this.navCtr.setRoot(LoadingPage);
     });
     this.submittedAlready = true;
   }

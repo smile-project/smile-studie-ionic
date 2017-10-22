@@ -160,8 +160,6 @@ export class InterventionPage implements OnInit {
   // erklärungen
   //TODO erklärung warum button disabled ist
 
-  // tech stuff
-  //TODO extra screen der questionaires holt
 
   private checkForQuestionaire() {
     this.smileQueryService.getQuestionaire().subscribe((result) => {
