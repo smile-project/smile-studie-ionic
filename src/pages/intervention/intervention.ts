@@ -146,14 +146,22 @@ export class InterventionPage implements OnInit {
     }
   }
 
-  //TODO studie done page
-  //TODO depression warning page
-  //TODO erklärung falls man grp 3 ist
-  //TODO erklärung warum button disabled ist
+  // studienende
   //TODO after study is done -> change group to 1?, mit status=2 koppeln
   //TODO damit aber auch gruppen im client resetten nach jedem fragebogen
+  //TODO studie done page
+  //TODO fragebogen 7 einbauen (nach 1 woche)
+  //TODO Studienabschlusstext
+
+  // group 3
+  //TODO erklärung falls man grp 3 ist
   //TODO notification für eine woche gruppe 3
-  //TODO neue strings eintippseln
+
+  // erklärungen
+  //TODO erklärung warum button disabled ist
+
+  // tech stuff
+  //TODO extra screen der questionaires holt
 
   private checkForQuestionaire() {
     this.smileQueryService.getQuestionaire().subscribe((result) => {

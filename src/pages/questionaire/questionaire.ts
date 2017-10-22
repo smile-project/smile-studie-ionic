@@ -128,7 +128,7 @@ export class QuestionairePage implements OnInit {
         inputs: [
           {
             name: 'answer',
-            placeholder: 'Your answer'
+            placeholder: 'Deine Antwort'
           }
         ],
         buttons: [{
@@ -180,12 +180,23 @@ export class QuestionairePage implements OnInit {
     console.log("Entered answers", this.selectedAnswers);
     this.smileQueryService.postQuestionaireAnswer(this.selectedAnswers).subscribe((result) => {
       console.log("Posting result", result);
+      // reset user group, since it might have changed
+      localStorage.removeItem('userGroup');
+
       if (this.shouldShowDepressionWarning()) {
         this.navCtr.setRoot(InfoPage, {
-          text: "Depression warning string"
+          title: 'Alles okay? :(',
+          text: 'Der letzte Fragebogen, den du beantwortet hast dreht sich um Depressionen. ' +
+          'Bei der Beantwortung dieses Fragebogens ist uns aufgefallen, dass deine Werte ziemlich hoch sind. ' +
+          'Daher möchten wir dir ans Herz legen diagnostisch abklären zu lassen, ob du eine Depression hast. ' +
+          'Solltest du eilig haben wende dich bitte an ein psychiatrische Notfallambulanz. ' +
+          'Solltest du akute Suizid-, oder Selbstverletzungsgedanken haben, nutze bitte den Dienst der ' +
+          'Telefonseelsorge unter http://www.telefonseelsorge.de. ' +
+          'Macht nichts überstürztes, wir haben dich Lieb :)'
         });
         return;
       }
+
       this.navCtr.setRoot(InterventionPage);
     }, error => {
       console.log("Posting error", error);

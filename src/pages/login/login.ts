@@ -4,6 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {TutorialPage} from "../tutorial/tutorial";
 import {AuthenticationService} from "../../services/AuthenticationService";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {InfoPage} from "../info/info";
 
 
 @Component({
@@ -38,7 +39,7 @@ export class LoginPage implements OnInit {
       this.authenticationService.login(this.loginForm.get('email').value, this.loginForm.get('password').value)
         .subscribe(result => {
           if (result) {
-            this.navCtrl.push(TutorialPage)
+            this.navCtrl.push(TutorialPage);
           } else {
             this.showError(this.loginErrorString);
           }

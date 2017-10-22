@@ -8,13 +8,13 @@ import {InterventionPage} from "../intervention/intervention";
 export class InfoPage {
 
   text: string;
+  title: string;
 
   constructor(private navParams: NavParams,
               private navCtrl: NavController) {
-    this.text= navParams.get('text');
+    this.text = navParams.get('text');
+    this.title = navParams.get('title');
   }
-
-  //TODO text fixen
 
   okay() {
     this.navCtrl.setRoot(InterventionPage);

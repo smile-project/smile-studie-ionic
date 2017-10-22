@@ -3,6 +3,7 @@ import {NavController, Slides} from "ionic-angular";
 import {TranslateService} from "@ngx-translate/core";
 import {InterventionPage} from "../intervention/intervention";
 import {TermsPage} from "../terms/terms";
+import {InfoPage} from "../info/info";
 
 export interface Slide {
   title: string;
@@ -26,6 +27,7 @@ export class TutorialPage implements OnInit {
   constructor(public navCtrl: NavController,
               public translateService: TranslateService) {
   }
+
   ngOnInit() {
     this.translateService.get(["TUTORIAL_SLIDE1_TITLE",
       "TUTORIAL_SLIDE1_DESCRIPTION",
