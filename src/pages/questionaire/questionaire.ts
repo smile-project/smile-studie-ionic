@@ -7,6 +7,7 @@ import {SmileQueryService} from "../../services/SmileQueryService";
 import {InterventionPage} from "../intervention/intervention";
 import {InfoPage} from "../info/info";
 import {LoadingPage} from "../loading/loading";
+import {TranslateService} from "@ngx-translate/core";
 @Component({
   selector: 'questionaire-page',
   templateUrl: 'questionaire.html',
@@ -58,7 +59,8 @@ export class QuestionairePage implements OnInit {
   constructor(public navCtr: NavController,
               public navParams: NavParams,
               public alertCtrl: AlertController,
-              public smileQueryService: SmileQueryService) {
+              public smileQueryService: SmileQueryService,
+              private translateService: TranslateService) {
   }
 
   ngOnInit() {
@@ -133,7 +135,7 @@ export class QuestionairePage implements OnInit {
           }
         ],
         buttons: [{
-          text: 'Confirm',
+          text: 'Okay',
           handler: data => {
             if (data.answer !== "") {
               return data.answer;
@@ -143,7 +145,7 @@ export class QuestionairePage implements OnInit {
           }
         },
           {
-            text: 'Cancel',
+            text: 'Abbrechen',
             role: 'cancel',
           }]
       });
@@ -181,7 +183,7 @@ export class QuestionairePage implements OnInit {
     console.log("Entered answers", this.selectedAnswers);
     this.smileQueryService.postQuestionaireAnswer(this.selectedAnswers).subscribe((result) => {
       console.log("Posting result", result);
-      // reset user group, since it might have changed
+      // reset user group, since it might have changed after posting a questionaire
       localStorage.removeItem('userGroup');
 
       if (this.shouldShowDepressionWarning()) {
@@ -199,12 +201,26 @@ export class QuestionairePage implements OnInit {
         return;
       }
 
+      if (this.shouldShowStudyEndPage()) {
+        this.translateService.get('FINISH_EXPLANATION').subscribe((value) => {
+          this.navCtr.setRoot(InfoPage, {
+            title: 'Studienabschluss',
+            text: value
+          })
+        });
+        return;
+      }
+
       this.navCtr.setRoot(LoadingPage);
     }, error => {
       console.log("Posting error", error);
       this.navCtr.setRoot(LoadingPage);
     });
     this.submittedAlready = true;
+  }
+
+  shouldShowStudyEndPage() {
+    return this.questionaire.id == 7;
   }
 
   shouldShowDepressionWarning() {

@@ -147,11 +147,10 @@ export class InterventionPage implements OnInit {
   }
 
   // studienende
-  //TODO after study is done -> change group to 1?, mit status=2 koppeln
-  //TODO damit aber auch gruppen im client resetten nach jedem fragebogen
-  //TODO studie done page
-  //TODO fragebogen 7 einbauen (nach 1 woche)
-  //TODO Studienabschlusstext
+  //TODO testen ob neue serverlogik geht
+
+  // general
+  //TODO timer anpassen für beta test
 
   // group 3
   //TODO erklärung falls man grp 3 ist
