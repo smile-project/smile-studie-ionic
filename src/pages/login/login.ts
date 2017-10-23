@@ -4,7 +4,6 @@ import {TranslateService} from '@ngx-translate/core';
 import {TutorialPage} from "../tutorial/tutorial";
 import {AuthenticationService} from "../../services/AuthenticationService";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {InfoPage} from "../info/info";
 
 
 @Component({
