@@ -1,9 +1,7 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {NavController, Slides} from "ionic-angular";
 import {TranslateService} from "@ngx-translate/core";
-import {InterventionPage} from "../intervention/intervention";
 import {TermsPage} from "../terms/terms";
-import {InfoPage} from "../info/info";
 import {LoadingPage} from "../loading/loading";
 
 export interface Slide {
@@ -41,8 +39,8 @@ export class TutorialPage implements OnInit {
       "TUTORIAL_SLIDE5_TITLE",
       "TUTORIAL_SLIDE5_DESCRIPTION",
     ]).subscribe(
-      (values) => {
-        console.log('Loaded values', values);
+      () => {
+        //console.log('Loaded values', values);
         this.slides = [];
       });
 

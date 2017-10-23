@@ -4,7 +4,6 @@ import {
   Button, List, NavController, NavParams, Slides
 } from "ionic-angular";
 import {SmileQueryService} from "../../services/SmileQueryService";
-import {InterventionPage} from "../intervention/intervention";
 import {InfoPage} from "../info/info";
 import {LoadingPage} from "../loading/loading";
 import {TranslateService} from "@ngx-translate/core";
@@ -110,7 +109,7 @@ export class QuestionairePage implements OnInit {
   }
 
   isRadioType(index: number) {
-    return this.questionaire.pages[index].answers[0].type === 'radio';
+    return this.questionaire.pages[index].answers[0].type === 'radio' || this.questionaire.pages[index].answers[0].type === 'radio_text';
   }
 
   isRadioText(index: number) {
@@ -150,9 +149,9 @@ export class QuestionairePage implements OnInit {
           }]
       });
       alert.onDidDismiss((data: any, role: string) => {
-        console.log("Received input", data.answer);
+        //console.log("Received input", data.answer);
         if (data.answer.length > 0 && role !== "cancel") {
-          console.log("input accepted");
+          //console.log("input accepted");
           this.currentTextValue = data.answer;
         } else {
           this.currentSelectedValue = null;
@@ -203,7 +202,7 @@ export class QuestionairePage implements OnInit {
 
       if (this.shouldShowStudyEndPage()) {
         this.translateService.get('FINISH_EXPLANATION').subscribe((value) => {
-          this.navCtr.setRoot(InfoPage, {
+          this.navCtr.  setRoot(InfoPage, {
             title: 'Studienabschluss',
             text: value
           })

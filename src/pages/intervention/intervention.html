@@ -2,6 +2,14 @@
 
   <ion-navbar>
     <ion-title>{{ 'INTERVENTION_TITLE' | translate }}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="showInfo()">
+        <ion-icon name="md-information-circle" style="font-size: xx-large">
+        </ion-icon>
+      </button>
+    </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
@@ -22,7 +30,7 @@
 
 
   <ion-item text-wrap class="transparent-bg">
-    <ion-label>{{'INTERVENTION_BUTTON' | translate}}</ion-label>
+    <ion-label>{{infoText}}</ion-label>
   </ion-item>
 
   <ion-item class="transparent-bg">

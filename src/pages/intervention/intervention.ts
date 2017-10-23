@@ -6,6 +6,8 @@ import {WelcomePage} from "../welcome/welcome";
 import {QuestionairePage} from "../questionaire/questionaire";
 import {InterventionActionPage} from "../intervention-action/intervention-action";
 import {LocalNotifications} from "@ionic-native/local-notifications";
+import {InfoPage} from "../info/info";
+import {TranslateService} from "@ngx-translate/core";
 @Component({
   selector: 'intervention-page',
   templateUrl: 'intervention.html'
@@ -17,11 +19,16 @@ export class InterventionPage implements OnInit {
   alertDate: Date;
   interventionReadyTime: boolean;
   interventionReadyGroup: boolean;
+  userGroup: number;
+  infoText: string;
+
+  nextDate: Date;
 
   constructor(public navCtrl: NavController,
               public smileQueryService: SmileQueryService,
               public authenticationService: AuthenticationService,
-              private localNotifications: LocalNotifications) {
+              private localNotifications: LocalNotifications,
+              private translateService: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -65,6 +72,7 @@ export class InterventionPage implements OnInit {
       let gmtDate = new Date(date);
       this.alertTime = InterventionPage.createISOString(gmtDate);
       this.alertDate = gmtDate;
+      console.log("loaded alertDate", gmtDate);
     } else {
       let newDate = new Date();
       newDate.setSeconds(0);
@@ -72,6 +80,7 @@ export class InterventionPage implements OnInit {
       newDate.setHours(17);
       this.alertTime = InterventionPage.createISOString(newDate);
       this.alertDate = newDate;
+      console.log("initialized alertDate", newDate);
       localStorage.setItem('alertDate', newDate.toISOString());
     }
     this.setNotification();
@@ -80,14 +89,20 @@ export class InterventionPage implements OnInit {
 
   private handleNextInterventionTime() {
     this.smileQueryService.getNextInterventionTime().subscribe(result => {
-      let nextDate = new Date(result);
+      this.nextDate = new Date(result);
       let currentDate = new Date();
-      let timeHasPassed = currentDate > nextDate;
+      let timeHasPassed = currentDate > this.nextDate;
+
+      console.log("Next intervention at", this.nextDate);
 
       if (timeHasPassed) {
         this.interventionReadyTime = true;
       }
-    }, error => {
+
+      // calling these here ensures we have the date ready
+      this.getInfoText();
+      this.setNotification();
+    }, () => {
       // probably 401 authorized
       this.interventionReadyTime = false;
       this.authenticationService.clearSavedAccount();
@@ -98,14 +113,41 @@ export class InterventionPage implements OnInit {
   private handleUserGroup(userGroup: string) {
     if (Number(userGroup) > 0) {
       this.interventionReadyGroup = true;
+      this.userGroup = Number(userGroup);
+      console.log("loaded group", userGroup);
+
+      // calling these so we have them ready
+      this.getInfoText();
+      this.setNotification();
     } else {
       this.smileQueryService.getInterventionGroup().subscribe(result => {
         if (result > 0) {
           this.interventionReadyGroup = true;
+          this.userGroup = result;
+          console.log("group gotten from server", result);
           localStorage.setItem('userGroup', result);
+          // calling these so we have them ready
+          this.getInfoText();
+          this.setNotification();
         }
       })
     }
+  }
+
+  getInfoText() {
+    if (this.userGroup != 3) {
+      this.translateService.get('INTERVENTION_BUTTON_' + this.userGroup).subscribe(result => {
+        this.infoText = result;
+      });
+    } else {
+      this.translateService.get(['INTERVENTION_BUTTON_3', 'INTERVENTION_BUTTON_3_END']).subscribe(result => {
+        this.infoText = result['INTERVENTION_BUTTON_3'] + " " + InterventionPage.formatDate(this.nextDate) + " " + result['INTERVENTION_BUTTON_3_END'];
+      });
+    }
+  }
+
+  static formatDate(date: Date) {
+    return date ? date.getDate() + "." + (date.getMonth() + 1) : "";
   }
 
   updateAlertActivation() {
@@ -121,17 +163,37 @@ export class InterventionPage implements OnInit {
     this.alertTime = InterventionPage.createISOString(gmtDate);
     this.alertDate = gmtDate;
     localStorage.setItem('alertDate', gmtDate.toISOString());
+    console.log('updated alertDate', gmtDate);
     this.setNotification();
   }
 
   setNotification() {
+    console.log("setNotification: alertactive && alertdate", this.alertActive, this.alertDate);
+    if (this.alertActive && this.alertDate && this.userGroup == 3 && this.nextDate) {
+      // edge case of group 3 in waiting time
+      console.log('setting waiting notification for group 3 during wait week');
+
+      this.localNotifications.clear(73468);
+      this.localNotifications.schedule({
+        id: 73468,
+        text: 'Deine Intervention für heute ist bereit!',
+        title: "Smile Studie",
+        at: this.nextDate
+      });
+      return;
+    }
+
     if (this.alertActive && this.alertDate) {
       let date = new Date();
 
       if (date > this.alertDate) {
         let nextDayDate = new Date(this.alertDate.getTime() + 24 * 60 * 60 * 1000);
         this.alertDate = nextDayDate;
+        console.log("updating notification: saved alertDate: ", this.alertDate);
+        console.log("updating notification: nextDayDate: ", nextDayDate);
         localStorage.setItem('alertDate', nextDayDate.toISOString());
+      } else {
+        console.log("updating notification: we are not past that date!");
       }
 
       this.localNotifications.clear(73468);
@@ -139,26 +201,11 @@ export class InterventionPage implements OnInit {
         id: 73468,
         text: 'Deine Intervention für heute ist bereit!',
         title: "Smile Studie",
-        //TODO icon doesn't work :(
         firstAt: this.alertDate,
         every: "day"
       })
     }
   }
-
-  // studienende
-  //TODO testen ob neue serverlogik geht
-
-  // general
-  //TODO timer anpassen für beta test
-
-  // group 3
-  //TODO erklärung falls man grp 3 ist
-  //TODO notification für eine woche gruppe 3
-
-  // erklärungen
-  //TODO erklärung warum button disabled ist
-
 
   private checkForQuestionaire() {
     this.smileQueryService.getQuestionaire().subscribe((result) => {
@@ -169,7 +216,7 @@ export class InterventionPage implements OnInit {
         this.authenticationService.clearSavedAccount();
         this.navCtrl.setRoot(WelcomePage);
       }
-    }, error => {
+    }, () => {
       // probably 401 unauthorized
       this.authenticationService.clearSavedAccount();
       this.navCtrl.setRoot(WelcomePage);
@@ -187,5 +234,16 @@ export class InterventionPage implements OnInit {
     this.navCtrl.push(InterventionActionPage);
   }
 
+  showInfo() {
+    if (this.userGroup >= 1 && this.userGroup <= 3) {
+      this.translateService.get('GROUP_' + this.userGroup + '_INFO_TEXT').subscribe(result => {
+        this.navCtrl.setRoot(InfoPage, {
+          title: "<3",
+          text: result
+        });
+      });
+      return;
+    }
+  }
 
 }

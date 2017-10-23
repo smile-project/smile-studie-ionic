@@ -6,7 +6,7 @@ import {AuthenticationService} from "./AuthenticationService";
 @Injectable()
 export class SmileQueryService {
 
-  public static baseUrl = "http://192.168.178.30:8080/";
+  public static baseUrl = "https://api.smile-studie.de/";
   private questionaireUrl = SmileQueryService.baseUrl + "questionaire";
   private questionaireAnswerUrl = SmileQueryService.baseUrl + "answer";
   private interventionAnswerUrl = SmileQueryService.baseUrl + "intervention";
@@ -18,32 +18,32 @@ export class SmileQueryService {
   }
 
   getInterventionGroup(): Observable<any> {
-    return this.http.get(this.interventionGroupUrl, {headers: this.buildAuthHeader()}).map(this.sendFunction)
-      .catch(this.catchFunction)
+    return this.http.get(this.interventionGroupUrl, {headers: this.buildAuthHeader()}).map(SmileQueryService.sendFunction)
+      .catch(SmileQueryService.catchFunction)
   }
 
   getQuestionaire(): Observable<any> {
-    return this.http.get(this.questionaireUrl, {headers: this.buildAuthHeader()}).map(this.sendFunction)
-      .catch(this.catchFunction)
+    return this.http.get(this.questionaireUrl, {headers: this.buildAuthHeader()}).map(SmileQueryService.sendFunction)
+      .catch(SmileQueryService.catchFunction)
   }
 
   postInterventionAnswer(body): Observable<any> {
-    return this.http.post(this.interventionAnswerUrl, body, {headers: this.buildAuthHeader()}).map(this.sendFunction)
-      .catch(this.catchFunction)
+    return this.http.post(this.interventionAnswerUrl, body, {headers: this.buildAuthHeader()}).map(SmileQueryService.sendFunction)
+      .catch(SmileQueryService.catchFunction)
   }
 
   postQuestionaireAnswer(body): Observable<any> {
-    return this.http.post(this.questionaireAnswerUrl, body, {headers: this.buildAuthHeader()}).map(this.sendFunction)
-      .catch(this.catchFunction);
+    return this.http.post(this.questionaireAnswerUrl, body, {headers: this.buildAuthHeader()}).map(SmileQueryService.sendFunction)
+      .catch(SmileQueryService.catchFunction);
   }
 
   getNextInterventionTime(): Observable<any> {
-    return this.http.get(this.nextInterventionTimeUrl, {headers: this.buildAuthHeader()}).map(this.sendFunction)
-      .catch(this.catchFunction);
+    return this.http.get(this.nextInterventionTimeUrl, {headers: this.buildAuthHeader()}).map(SmileQueryService.sendFunction)
+      .catch(SmileQueryService.catchFunction);
   }
 
 
-  sendFunction(response: Response) {
+  static sendFunction(response: Response) {
     if (response.status == 200) {
       console.log("Status 200", response);
       try {
@@ -59,7 +59,7 @@ export class SmileQueryService {
     }
   }
 
-  catchFunction(error) {
+  static catchFunction(error) {
     console.log("Error", error);
     return Observable.throw(error)
   }
