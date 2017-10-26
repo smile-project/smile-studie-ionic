@@ -3,7 +3,7 @@ welcome-page {
     position: relative;
     //background: url('../assets/img/background.png') no-repeat transparent;
     background-size: cover;
-    height: 45%;
+    height: 30%;
     z-index: 1;
     background-repeat: repeat-x;
     animation: animatedBackground 40s linear infinite;
@@ -22,12 +22,13 @@ welcome-page {
   }
   .splash-logo {
     margin: auto;
-    background: url('../assets/img/welcome_icon.png') repeat transparent ;
+    background: url('../assets/img/icon_white.png') repeat transparent ;
     background-size: 100%;
     width: 128px;
     height: 128px;
   }
   .splash-intro {
+    padding-top: 10%;
     font-size: 18px;
     font-weight: bold;
     max-width: 80%;

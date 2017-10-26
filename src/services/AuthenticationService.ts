@@ -49,6 +49,7 @@ export class AuthenticationService {
   }
 
   register(username: string, password: string): Observable<boolean> {
+    // @todo remove tailing spaces (check?)
     return this.http.post(this.registerUrl, JSON.stringify({
       username: username,
       password: password

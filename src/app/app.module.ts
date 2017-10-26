@@ -23,6 +23,8 @@ import {InterventionActionPage} from "../pages/intervention-action/intervention-
 import {LocalNotifications} from '@ionic-native/local-notifications';
 import {InfoPage} from "../pages/info/info";
 import {LoadingPage} from "../pages/loading/loading";
+import {NativeStorage} from "@ionic-native/native-storage";
+import {UniqueDeviceID} from "@ionic-native/unique-device-id";
 
 
 export function HttpLoaderFactory(http: Http) {
@@ -79,6 +81,8 @@ export function HttpLoaderFactory(http: Http) {
     SplashScreen,
     AuthenticationService,
     LocalNotifications,
+    NativeStorage,
+    UniqueDeviceID,
     SmileQueryService,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

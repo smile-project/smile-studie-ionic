@@ -8,11 +8,11 @@
 
 <ion-content class="content-bg">
 
-  <ion-slides>
-    <ion-slide>
-      <h1 class="transparent-bg">{{title}}</h1>
-      <h5 class="transparent-bg">{{text}}</h5>
-      <button ion-button round large class="quokka-button" (click)="okay()">Okay</button>
+  <ion-slides #slider>
+    <ion-slide class="slide-style" *ngFor="let slide of slides">
+      <h2 class="transparent-bg main-title">{{slide.title}}</h2>
+      <p class="transparent-bg text preserve-line-breaks">{{slide.description}}</p>
+      <button ion-button round large class="quokka-button" (click)="okay()">{{'FORWARD' | translate}}</button>
     </ion-slide>
   </ion-slides>
 

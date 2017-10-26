@@ -36,9 +36,185 @@
   font-weight: bold !important;
 }
 
-.quokka-button{
-  background-color: rgba(0, 0, 0, 0);
+.quokka-button {
+  background-color: rgba(0, 0, 0, 0.3);
   color: white !important;
   font-weight: bold !important;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 25px;
+  box-shadow: unset !important;
+  -webkit-box-shadow: unset !important;
+  font-family: Helvetica, serif;
+  font-size: 1.6rem;
 }
+
+.main-title {
+  font-weight: bold !important;
+  font-size: 1.6rem;
+}
+
+.text {
+  font-size: 1.4rem !important;
+  font-weight: normal !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+}
+
+.link-wrapper {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  margin-right: 30px;
+  margin-left: 30px;
+}
+
+.link {
+  color: white;
+  font-size: 1.6rem;
+}
+
+.button-md {
+  text-transform: none;
+}
+
+.login-register-top-space {
+  padding-top: 60%;
+}
+
+.toolbar-background-md {
+  background: none;
+}
+
+.toolbar-title-md {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.4rem;
+}
+
+.bar-button-default-md {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.toolbar-md {
+  //padding: 0;
+  //min-height: 0;
+}
+
+.header-md::after {
+  background-image: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.item-input .label-md {
+  font-family: Helvetica, serif !important;
+  font-weight: bold !important;
+  font-size: 1.4rem;
+}
+
+.slide-style > div {
+  margin-bottom: 20%;
+}
+
+.top-margin-25 {
+  margin-top: 25%;
+}
+
+.tutorial-item-1 > div {
+  border: none !important;
+}
+
+.tutorial-item-1 {
+  margin: 0 auto !important;
+  width: 50% !important;
+}
+
+.checkbox-margin {
+  margin: 9px 9px 9px 9px !important;
+}
+
+.swiper-pagination-bullet-active {
+  background: white !important;
+}
+
+.radio-inner {
+  background: white !important;
+}
+
+.radio-md .radio-icon {
+  border-color: white !important;
+}
+
+.radio-checked {
+  border-color: white !important;
+}
+
+.toggle-md.toggle-checked .toggle-icon {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.toggle-md .toggle-icon {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.toggle-md.toggle-checked .toggle-inner {
+  background-color: white;
+}
+
+.toggle-md .toggle-inner {
+  background-color: white;
+}
+
+.text-input::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.4rem !important;
+
+}
+
+.text-input:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.4rem !important;
+
+}
+
+.text-input::-webkit-input-placeholder {
+  text-indent: 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.4rem !important;
+
+}
+
+.pad-right-16 {
+  padding-right: 16px;
+}
+
+.swiper-pagination-progress .swiper-pagination-progressbar {
+  background-color: white;
+}
+
+.preserve-line-breaks {
+  white-space: pre-wrap !important;
+}
+
+.item-radio.item-md ion-label{
+  color: rgba(255,255,255,0.75) !important;
+}
+
+.item-input .label-md{
+  color: rgba(255,255,255,0.75) !important;
+}
+
+.quokka-button-container{
+  width: 100%;
+}
+
+.quokka-button-containered{
+  margin: 0 auto;
+  display: block;
+}
+
+.no-bottom-border > div{
+  border-bottom: none !important;
+}
+
+//TODO login/register screen logo hinpacken
+//TODO input felder selected line blau -> weiß
+//TODO percentage in questionaire
+//TODO borders removen am ende der seite: intervention + int

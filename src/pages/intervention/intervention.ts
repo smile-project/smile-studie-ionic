@@ -6,8 +6,8 @@ import {WelcomePage} from "../welcome/welcome";
 import {QuestionairePage} from "../questionaire/questionaire";
 import {InterventionActionPage} from "../intervention-action/intervention-action";
 import {LocalNotifications} from "@ionic-native/local-notifications";
-import {InfoPage} from "../info/info";
 import {TranslateService} from "@ngx-translate/core";
+import {TermsPage} from "../terms/terms";
 @Component({
   selector: 'intervention-page',
   templateUrl: 'intervention.html'
@@ -23,6 +23,14 @@ export class InterventionPage implements OnInit {
   infoText: string;
 
   nextDate: Date;
+
+  //TODO Group 3 no notification
+  //TODO text grp3 zentrieren
+  //TODO delete grp -1
+
+  //TODO grp 1/2 fragebogen zweite runde datum
+
+  //TODO info button durch terms ersetzen
 
   constructor(public navCtrl: NavController,
               public smileQueryService: SmileQueryService,
@@ -216,8 +224,9 @@ export class InterventionPage implements OnInit {
         this.authenticationService.clearSavedAccount();
         this.navCtrl.setRoot(WelcomePage);
       }
-    }, () => {
+    }, (error) => {
       // probably 401 unauthorized
+      // offline case  @todo check error code
       this.authenticationService.clearSavedAccount();
       this.navCtrl.setRoot(WelcomePage);
     });
@@ -237,10 +246,7 @@ export class InterventionPage implements OnInit {
   showInfo() {
     if (this.userGroup >= 1 && this.userGroup <= 3) {
       this.translateService.get('GROUP_' + this.userGroup + '_INFO_TEXT').subscribe(result => {
-        this.navCtrl.setRoot(InfoPage, {
-          title: "<3",
-          text: result
-        });
+        this.navCtrl.push(TermsPage);
       });
       return;
     }

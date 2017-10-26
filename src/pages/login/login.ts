@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
       this.authenticationService.login(this.loginForm.get('email').value, this.loginForm.get('password').value)
         .subscribe(result => {
           if (result) {
-            this.navCtrl.push(TutorialPage);
+            this.navCtrl.setRoot(TutorialPage);
           } else {
             this.showError(this.loginErrorString);
           }

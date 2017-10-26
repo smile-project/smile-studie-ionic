@@ -37,7 +37,7 @@ export class RegisterPage implements OnInit {
           //registration successful, get an auth token by logging in
           this.authenticationService.login(this.registrationForm.get('email').value, this.registrationForm.get('password').value).subscribe(result => {
             if (result) {
-              this.navCtrl.push(TutorialPage);
+              this.navCtrl.setRoot(TutorialPage);
             }
           })
         } else {

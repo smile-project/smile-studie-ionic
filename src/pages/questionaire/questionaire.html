@@ -11,25 +11,25 @@
 <ion-content sc class="content-bg">
   <ion-slides #slides [pager]="true" paginationType="progress">
 
-    <ion-slide class="transparent-bg">
-      <h1>{{questionaire.title}}</h1>
-      <h5>{{questionaire.description}}</h5>
-      <button class="quokka-button" ion-button (click)="nextSlide()">Next</button>
+    <ion-slide class="transparent-bg slide-style">
+      <h2 class="main-title">{{questionaire.title}}</h2>
+      <p class="text">{{questionaire.description}}</p>
+      <button class="quokka-button top-margin-25" ion-button (click)="nextSlide()">{{'FORWARD' | translate}}</button>
     </ion-slide>
 
-    <ion-slide *ngFor="let page of questionaire.pages; let i = index" class="transparent-bg">
-      <h1>{{page.title}}</h1>
-      <h5>{{page.text}}</h5>
+    <ion-slide *ngFor="let page of questionaire.pages; let i = index" class="transparent-bg slide-style ">
+      <h2 class="main-title">{{page.title}}</h2>
+      <p class="text">{{page.text}}</p>
 
-      <ion-list #list radio-group [(ngModel)]="currentSelectedValue" *ngIf="page.answers[0].type === 'radio' || page.answers[0].type === 'radio_texte'">
-        <ion-item class="transparent-bg" *ngFor="let answer of page.answers; let j = index" (click)="openTextField(answer, page.title)">
+      <ion-list #list radio-group [(ngModel)]="currentSelectedValue" *ngIf="page.answers[0].type === 'radio' || page.answers[0].type === 'radio_text'">
+        <ion-item class="transparent-bg pad-right-16" *ngFor="let answer of page.answers; let j = index" (click)="openTextField(answer, page.title)">
           <ion-radio class="transparent-bg" (click)="openTextField(answer, page.title)" [value]="answer.value"></ion-radio>
           <ion-label class="transparent-bg" (click)="openTextField(answer, page.title)">{{answer.text}}</ion-label>
         </ion-item>
       </ion-list>
 
       <div style="margin-bottom: 120px" *ngIf="page.answers[0].type === 'input_number'">
-        <ion-item class="transparent-bg">
+        <ion-item class="transparent-bg pad-right-16">
           <ion-label class="transparent-bg">{{page.answers[0].text}}</ion-label>
           <ion-input class="transparent-bg" type="number" [(ngModel)]="currentSelectedValue"></ion-input>
         </ion-item>

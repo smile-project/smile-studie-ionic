@@ -13,6 +13,8 @@ export class LoadingPage implements OnInit {
               private navCtrl: NavController) {
   }
 
+  //TODO quokka logo statt text
+
   ngOnInit() {
     this.smileQueryService.getQuestionaire().subscribe(result => {
       if (result && result.id != null) {

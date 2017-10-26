@@ -186,27 +186,12 @@ export class QuestionairePage implements OnInit {
       localStorage.removeItem('userGroup');
 
       if (this.shouldShowDepressionWarning()) {
-        this.navCtr.setRoot(InfoPage, {
-          title: 'Alles okay? :(',
-          text: 'Der letzte Fragebogen, den du beantwortet hast dreht sich um Depressionen. ' +
-          'Bei der Beantwortung dieses Fragebogens ist uns aufgefallen, dass deine Werte ziemlich hoch sind. ' +
-          'Daher möchten wir dir ans Herz legen diagnostisch abklären zu lassen, ob du eine Depression hast. ' +
-          'Solltest du eilig haben wende dich bitte an ein psychiatrische Notfallambulanz. ' +
-          'Solltest du akute Suizid-, oder Selbstverletzungsgedanken haben, nutze bitte den Dienst der ' +
-          'Telefonseelsorge unter http://www.telefonseelsorge.de. ' +
-          'Macht nichts überstürztes, wir haben dich Lieb :)',
-          redirectTo: LoadingPage
-        });
+        this.openDepressionWarningPage();
         return;
       }
 
       if (this.shouldShowStudyEndPage()) {
-        this.translateService.get('FINISH_EXPLANATION').subscribe((value) => {
-          this.navCtr.  setRoot(InfoPage, {
-            title: 'Studienabschluss',
-            text: value
-          })
-        });
+        this.openStudyFinishPage();
         return;
       }
 
@@ -234,4 +219,73 @@ export class QuestionairePage implements OnInit {
     }
     return false;
   }
+
+  openDepressionWarningPage() {
+    //TODO maybe link
+    //TODO linebreaks and stuff
+    //TODO telefonseelsorge call intent
+    this.translateService.get(['DEPRESSION_WARN_TITLE', 'DEPRESSION_WARN_DESCRIPTION']).subscribe(values => {
+      this.navCtr.setRoot(InfoPage, {
+        slides: [{
+          title: values['DEPRESSION_WARN_TITLE'],
+          description: values['DEPRESSION_WARN_DESCRIPTION']
+        }],
+        redirectTo: LoadingPage
+      });
+    });
+  }
+
+  openStudyFinishPage() {
+    this.translateService.get([
+      'FINISH_EXPLAIN_1_TITLE',
+      'FINISH_EXPLAIN_1_DESCRIPTION',
+      'FINISH_EXPLAIN_2_TITLE',
+      'FINISH_EXPLAIN_2_DESCRIPTION',
+      'FINISH_EXPLAIN_3_TITLE',
+      'FINISH_EXPLAIN_3_DESCRIPTION',
+      'FINISH_EXPLAIN_4_TITLE',
+      'FINISH_EXPLAIN_4_DESCRIPTION',
+      'FINISH_EXPLAIN_5_TITLE',
+      'FINISH_EXPLAIN_5_DESCRIPTION',
+      'FINISH_EXPLAIN_6_TITLE',
+      'FINISH_EXPLAIN_6_DESCRIPTION',
+      'FINISH_EXPLAIN_7_TITLE',
+      'FINISH_EXPLAIN_7_DESCRIPTION'
+    ]).subscribe((value) => {
+      this.navCtr.setRoot(InfoPage, {
+        slides: [
+          {
+            title: value['FINISH_EXPLAIN_1_TITLE'],
+            description: value['FINISH_EXPLAIN_1_DESCRIPTION']
+          },
+          {
+            title: value['FINISH_EXPLAIN_2_TITLE'],
+            description: value['FINISH_EXPLAIN_2_DESCRIPTION']
+          },
+          {
+            title: value['FINISH_EXPLAIN_3_TITLE'],
+            description: value['FINISH_EXPLAIN_3_DESCRIPTION']
+          },
+          {
+            title: value['FINISH_EXPLAIN_4_TITLE'],
+            description: value['FINISH_EXPLAIN_4_DESCRIPTION']
+          },
+          {
+            title: value['FINISH_EXPLAIN_5_TITLE'],
+            description: value['FINISH_EXPLAIN_5_DESCRIPTION']
+          },
+          {
+            title: value['FINISH_EXPLAIN_6_TITLE'],
+            description: value['FINISH_EXPLAIN_6_DESCRIPTION']
+          },
+          {
+            title: value['FINISH_EXPLAIN_7_TITLE'],
+            description: value['FINISH_EXPLAIN_7_DESCRIPTION']
+          },
+
+        ]
+      })
+    });
+  }
+
 }

@@ -5,37 +5,35 @@
 
 <ion-content no-bounce class="content-bg">
 
-  <ion-slides pager="true" #slider class="transparent-bg">
+  <ion-slides pager="false" #slider class="transparent-bg">
 
-    <ion-slide>
-      <img src="" class="slide-image"/>
-      <h2 class="slide-title">{{'TUTORIAL_SLIDE1_TITLE' | translate}}</h2>
-      <p innerHtml="{{'TUTORIAL_SLIDE1_DESCRIPTION1' | translate}}"></p>
-      <a (click)="openTerms()">{{'TERMS_OF_SERVICE' | translate}}</a>
-      <p innerHtml="{{'TUTORIAL_SLIDE1_DESCRIPTION2' | translate}}"></p>
+    <ion-slide class="slide-style">
+      <h2 class="main-title">{{'TUTORIAL_SLIDE1_TITLE' | translate}}</h2>
+      <p class="text" innerHtml="{{'TUTORIAL_SLIDE1_DESCRIPTION1' | translate}}"></p>
+      <div class="link-wrapper">
+        <a class="link" (click)="openTerms()">{{'TERMS_OF_SERVICE' | translate}}</a>
+      </div>
+      <p class="text" innerHtml="{{'TUTORIAL_SLIDE1_DESCRIPTION2' | translate}}"></p>
 
-      <form (submit)="onTermsConfirmation()">
-        <ion-item class="transparent-bg">
-          <ion-label class="transparent-bg">{{'TUTORIAL_SLIDE1_TERMS_CHECKBOX' | translate}}</ion-label>
-          <ion-checkbox [(ngModel)]="termsAccepted" [disabled]="wentForward" name="termsAccepted"></ion-checkbox>
-        </ion-item>
-        <button class="quokka-button" ion-button type="submit" [disabled]="!termsAccepted || wentForward">{{'ACCEPT' | translate}}</button>
+      <form class="top-margin-25" (submit)="onTermsConfirmation()">
+        <button class="quokka-button" ion-button type="submit" [disabled]="!termsAccepted || wentForward">{{'ACCEPT' |
+          translate}}
+        </button>
       </form>
     </ion-slide>
 
     <ion-slide *ngFor="let slide of slides">
       <img [src]="slide.image" class="slide-image"/>
-      <h2 class="slide-title" [innerHTML]="slide.title"></h2>
-      <p [innerHTML]="slide.description"></p>
+      <h2 class="main-title" [innerHTML]="slide.title"></h2>
+      <p class="text" [innerHTML]="slide.description"></p>
+      <button class="top-margin-25 quokka-button" ion-button (click)="continueSwipe()" >{{'FORWARD' | translate}}</button>
     </ion-slide>
 
-    <ion-slide>
-      <img src="assets/img/ica-slidebox-img-4.png" class="slide-image"/>
-      <h2 class="slide-title">{{ 'TUTORIAL_SLIDE6_TITLE' | translate }}</h2>
-      <p>{{ 'TUTORIAL_SLIDE6_DESCRIPTION' | translate }}</p>
-      <button ion-button icon-end large clear (click)="startApp()">
+    <ion-slide class="tutorial-slide-1">
+      <h2 class="main-title">{{ 'TUTORIAL_SLIDE7_TITLE' | translate }}</h2>
+      <p class="text">{{ 'TUTORIAL_SLIDE7_DESCRIPTION' | translate }}</p>
+      <button class="top-margin-25 quokka-button" ion-button (click)="startApp()">
         {{ 'TUTORIAL_CONTINUE_BUTTON' | translate }}
-        <ion-icon name="arrow-forward"></ion-icon>
       </button>
     </ion-slide>
   </ion-slides>

@@ -1,27 +1,37 @@
-import {Component} from "@angular/core";
-import {NavController, NavParams} from "ionic-angular";
+import {Component, ViewChild} from "@angular/core";
+import {NavController, NavParams, Slides} from "ionic-angular";
 import {InterventionPage} from "../intervention/intervention";
+
+export interface Slide {
+  title: string,
+  description: string,
+}
+
 @Component({
   selector: 'info-page',
   templateUrl: 'info.html'
 })
 export class InfoPage {
-
-  text: string;
-  title: string;
+  @ViewChild('slider')
+  slider: Slides;
+  slides: Slide[];
   redirectTo;
+
 
   constructor(private navParams: NavParams,
               private navCtrl: NavController) {
-    this.text = navParams.get('text');
-    this.title = navParams.get('title');
     this.redirectTo = navParams.get('redirectTo');
+    this.slides = navParams.get('slides');
   }
 
   okay() {
-    if (this.redirectTo) {
-      this.navCtrl.setRoot(this.redirectTo);
+    if (this.slider.isEnd()) {
+      if (this.redirectTo) {
+        this.navCtrl.setRoot(this.redirectTo);
+      }
+      this.navCtrl.setRoot(InterventionPage);
+    } else {
+      this.slider.slideNext();
     }
-    this.navCtrl.setRoot(InterventionPage);
   }
 }

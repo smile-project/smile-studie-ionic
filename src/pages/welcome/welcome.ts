@@ -5,6 +5,7 @@ import {RegisterPage} from "../register/register";
 import {AuthenticationService} from "../../services/AuthenticationService";
 import {TutorialPage} from "../tutorial/tutorial";
 import {InterventionPage} from "../intervention/intervention";
+import {LoadingPage} from "../loading/loading";
 @Component({
   selector: 'welcome-page',
   templateUrl: 'welcome.html'
@@ -18,7 +19,7 @@ export class WelcomePage implements OnInit {
   ngOnInit() {
     if (this.authenticationService.getToken()) {
       if (localStorage.getItem('termsAccepted') && localStorage.getItem('tutorialAccepted')) {
-        this.navCtrl.setRoot(InterventionPage);
+        this.navCtrl.setRoot(LoadingPage);
       } else {
         this.navCtrl.setRoot(TutorialPage);
       }
