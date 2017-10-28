@@ -65,8 +65,6 @@ export class QuestionairePage implements OnInit {
   alertOkay: string;
   alertCancel: string;
 
-  //TODO evtl percentage anzeige in questionaire
-
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
               private toastCtrl: ToastController,
@@ -239,11 +237,15 @@ export class QuestionairePage implements OnInit {
   }
 
   openDepressionWarningPage() {
-    this.translateService.get(['DEPRESSION_WARN_TITLE', 'DEPRESSION_WARN_DESCRIPTION']).subscribe(values => {
+    this.translateService.get(['DEPRESSION_WARN_TITLE', 'DEPRESSION_WARN_DESCRIPTION',
+      'DEPRESSION_WARN_LINK', 'DEPRESSION_WARN_AFTERLINK', 'DEPRESSION_WARN_NUMBER']).subscribe(values => {
       this.navCtrl.setRoot(InfoPage, {
         slides: [{
           title: values['DEPRESSION_WARN_TITLE'],
-          description: values['DEPRESSION_WARN_DESCRIPTION']
+          description: values['DEPRESSION_WARN_DESCRIPTION'],
+          link: values['DEPRESSION_WARN_LINK'],
+          afterLink: values['DEPRESSION_WARN_AFTERLINK'],
+          phoneNumber: values['DEPRESSION_WARN_NUMBER']
         }],
         redirectTo: LoadingPage
       });
@@ -298,7 +300,8 @@ export class QuestionairePage implements OnInit {
             description: value['FINISH_EXPLAIN_7_DESCRIPTION']
           },
 
-        ]
+        ],
+        redirectTo: LoadingPage
       })
     });
   }

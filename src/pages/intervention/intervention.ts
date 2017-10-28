@@ -11,6 +11,8 @@ import {TermsPage} from "../terms/terms";
 import {NativeStorage} from "@ionic-native/native-storage";
 import {Observable} from "rxjs/Observable";
 import {Subscriber} from "rxjs/Subscriber";
+import {LoadingPage} from "../loading/loading";
+import {InfoPage} from "../info/info";
 @Component({
   selector: 'intervention-page',
   templateUrl: 'intervention.html'
@@ -30,11 +32,7 @@ export class InterventionPage implements OnInit {
   notificationTitle: string;
   notificationText: string;
 
-  //TODO text grp3 zentrieren
   //TODO grp 1/2 fragebogen zweite runde datum
-
-  //TODO borders removen am ende der seite: intervention + int
-  //TODO fix rights to be known at apk time
 
   constructor(private navCtrl: NavController,
               private smileQueryService: SmileQueryService,

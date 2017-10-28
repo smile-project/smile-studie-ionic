@@ -29,14 +29,14 @@
   </ion-item>
 
 
-  <ion-item text-wrap class="pad-right-16 transparent-bg">
+  <ion-item text-wrap class="pad-right-16 transparent-bg" [ngClass]="{'group-3-text-middle' : userGroup === 3}">
     <ion-label class="preserve-line-breaks text">{{infoText}}</ion-label>
   </ion-item>
 
   <ion-item class="pad-right-16 transparent-bg" *ngIf="userGroup !== 3"
             [ngClass]="{'no-bottom-border': !(!interventionReadyTime  && userGroup !== 3)}">
-    <div class="quokka-button-container">
-      <button class="quokka-button quokka-button-containered" ion-button round large
+    <div class="quokka-horizontal-center-container">
+      <button class="quokka-button quokka-horizontal-center-item" ion-button round large
               [disabled]="!interventionReadyTime" (click)="startIntervention()">
         {{'INTERVENTION_BUTTON_LABEL' | translate}}
       </button>

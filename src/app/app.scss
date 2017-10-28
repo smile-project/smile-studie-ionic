@@ -72,6 +72,11 @@
   font-size: 1.6rem;
 }
 
+.depression-warning-link{
+  color: white;
+  font-size: 1.6rem;
+}
+
 .button-md {
   text-transform: none;
 }
@@ -201,11 +206,11 @@
   color: rgba(255,255,255,0.75) !important;
 }
 
-.quokka-button-container{
+.quokka-horizontal-center-container{
   width: 100%;
 }
 
-.quokka-button-containered{
+.quokka-horizontal-center-item{
   margin: 0 auto;
   display: block;
 }
@@ -220,4 +225,24 @@
   background-size: 100%;
   width: 128px;
   height: 128px;
+}
+
+.group-3-text-middle{
+  padding-top: 30%;
+}
+
+.group-3-text-middle > div {
+  border-bottom: none !important;
+}
+
+.terms-title{
+  text-align: center !important;
+  font-size: 2rem !important;
+  padding-bottom: 10px !important;
+}
+
+
+.pad-sides-16{
+  padding-left: 16px !important;
+  padding-right: 16px !important;
 }

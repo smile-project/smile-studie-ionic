@@ -18,7 +18,7 @@
     </ion-slide>
 
     <ion-slide *ngFor="let page of questionaire.pages; let i = index" class="transparent-bg slide-style ">
-      <h2 class="main-title">{{page.title}}</h2>
+      <h2 text-wrap class="main-title pad-sides-16">{{page.title}}</h2>
       <p class="text">{{page.text}}</p>
 
       <ion-list #list radio-group [(ngModel)]="currentSelectedValue" *ngIf="page.answers[0].type === 'radio' || page.answers[0].type === 'radio_text'">
@@ -43,7 +43,7 @@
       </div>
 
 
-      <button class="quokka-button" ion-button [disabled]="!currentSelectedValue" (click)="nextSlide()" #nextButton>Next</button>
+      <button class="quokka-button" ion-button [disabled]="!currentSelectedValue" (click)="nextSlide()" #nextButton>{{'FORWARD' | translate}}</button>
     </ion-slide>
 
   </ion-slides>

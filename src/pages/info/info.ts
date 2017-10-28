@@ -5,6 +5,9 @@ import {InterventionPage} from "../intervention/intervention";
 export interface Slide {
   title: string,
   description: string,
+  link?: string,
+  afterLink?: string,
+  phoneNumber?: string
 }
 
 @Component({
@@ -16,10 +19,6 @@ export class InfoPage {
   slider: Slides;
   slides: Slide[];
   redirectTo;
-
-  //TODO maybe link for seelsorge
-  //TODO fix linebreaks and stuff
-  //TODO telefonseelsorge call intent
 
   constructor(private navParams: NavParams,
               private navCtrl: NavController) {

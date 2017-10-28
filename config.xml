@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="de.smile-studie" version="0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="de.smile-studie" version="0.4" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Smile Studie</name>
     <description>Die Studie zur Erhöhung der Lebenszufriedenheit</description>
     <author email="madox@sesen.me" href="https://smile-studie.de/">Smile Team</author>
@@ -43,9 +43,13 @@
         <splash density="port-xhdpi" src="resources/android/splash/drawable-port-xhdpi-screen.png" />
         <splash density="port-xxhdpi" src="resources/android/splash/drawable-port-xxhdpi-screen.png" />
         <splash density="port-xxxhdpi" src="resources/android/splash/drawable-port-xxxhdpi-screen.png" />
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+        </config-file>
     </platform>
     <allow-navigation href="http://172.16.0.102:8101" />
     <allow-navigation href="https://api-smile-studie.de" />
+    <allow-navigation href="http://192.168.178.30:8101" />
     <engine name="android" spec="^6.3.0" />
     <plugin name="cordova-plugin-app-event" spec="file:node_modules/cordova-plugin-app-event" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
@@ -57,5 +61,6 @@
     <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
     <plugin name="de.appplant.cordova.plugin.local-notification" spec="^0.8.5" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <allow-navigation href="http://192.168.178.30:8101" />
+    <plugin name="cordova-custom-config" spec="^4.0.2" />
+    <allow-navigation href="http://192.168.178.30:8100" />
 </widget>
