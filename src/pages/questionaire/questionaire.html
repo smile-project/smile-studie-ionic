@@ -35,6 +35,14 @@
         </ion-item>
       </div>
 
+      <div style="margin-bottom: 120px" *ngIf="page.answers[0].type === 'input_text'">
+        <ion-item class="transparent-bg pad-right-16">
+          <ion-label class="transparent-bg">{{page.answers[0].text}}</ion-label>
+          <ion-input class="transparent-bg" type="text" [(ngModel)]="currentTextValue"></ion-input>
+        </ion-item>
+      </div>
+
+
       <button class="quokka-button" ion-button [disabled]="!currentSelectedValue" (click)="nextSlide()" #nextButton>Next</button>
     </ion-slide>
 

@@ -1,8 +1,9 @@
 import {Component, OnInit} from "@angular/core";
 import {SmileQueryService} from "../../services/SmileQueryService";
-import {NavController} from "ionic-angular";
+import {NavController, ToastController} from "ionic-angular";
 import {QuestionairePage} from "../questionaire/questionaire";
 import {InterventionPage} from "../intervention/intervention";
+import {NativeStorage} from "@ionic-native/native-storage";
 @Component({
   selector: 'loading-page',
   templateUrl: 'loading.html'
@@ -10,19 +11,35 @@ import {InterventionPage} from "../intervention/intervention";
 export class LoadingPage implements OnInit {
 
   constructor(private smileQueryService: SmileQueryService,
-              private navCtrl: NavController) {
+              private navCtrl: NavController,
+              private toastCtrl: ToastController,
+              private nativeStorage: NativeStorage) {
   }
 
-  //TODO quokka logo statt text
 
   ngOnInit() {
+    console.log("Getting new Questionaires");
     this.smileQueryService.getQuestionaire().subscribe(result => {
       if (result && result.id != null) {
+        console.log("Got questionaire " + result.id);
         this.navCtrl.setRoot(QuestionairePage, {questionaire: result});
       } else {
-        this.navCtrl.setRoot(InterventionPage);
+        console.log("No questionaires to do right now!");
+        this.getGroup();
       }
-    })
+    }, error => {
+      this.smileQueryService.catchErrorHandling(error, this.navCtrl, this.toastCtrl, this.nativeStorage);
+    });
   }
 
+  private getGroup() {
+    console.log("Getting group since it might have changed");
+    this.smileQueryService.getInterventionGroup().subscribe(result => {
+      this.nativeStorage.setItem('userGroup', result).then(() => {
+        this.navCtrl.setRoot(InterventionPage);
+      });
+    }, error => {
+      this.smileQueryService.catchErrorHandling(error, this.navCtrl, this.toastCtrl, this.nativeStorage);
+    });
+  }
 }

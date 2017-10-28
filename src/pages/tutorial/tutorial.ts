@@ -3,13 +3,13 @@ import {NavController, Slides} from "ionic-angular";
 import {TranslateService} from "@ngx-translate/core";
 import {TermsPage} from "../terms/terms";
 import {LoadingPage} from "../loading/loading";
+import {NativeStorage} from "@ionic-native/native-storage";
 
 export interface Slide {
   title: string;
   description: string;
   image?: string;
 }
-
 
 @Component({
   selector: 'tutorial-page',
@@ -20,14 +20,10 @@ export class TutorialPage implements OnInit {
   slider: Slides;
   slides: Slide[];
 
-  termsAccepted: boolean = true;
-  wentForward: boolean;
-
   constructor(public navCtrl: NavController,
-              public translateService: TranslateService) {
+              public translateService: TranslateService,
+              private nativeStorage: NativeStorage) {
   }
-
-  //TODO code cleanup
 
   ngOnInit() {
     this.translateService.get(
@@ -61,27 +57,18 @@ export class TutorialPage implements OnInit {
   }
 
   onTermsConfirmation() {
-    if (this.termsAccepted) {
-      localStorage.setItem('termsAccepted', "true");
-      this.slider.lockSwipes(false);
-      this.slider.slideNext();
-      this.wentForward = true;
-    }
+    this.slider.lockSwipes(false);
+    this.slider.slideNext();
   }
 
   openTerms() {
-    this.navCtrl.push(TermsPage, {}, {
-      animate: true,
-      direction: 'forward'
-    })
+    this.navCtrl.push(TermsPage)
   }
 
   startApp() {
-    localStorage.setItem('tutorialAccepted', "true");
-    this.navCtrl.setRoot(LoadingPage, {}, {
-      animate: true,
-      direction: 'forward'
-    });
+    console.log("Tutorial has been accepted! Savinng it to storage");
+    this.nativeStorage.setItem('tutorialAccepted', true);
+    this.navCtrl.setRoot(LoadingPage);
   }
 
 }

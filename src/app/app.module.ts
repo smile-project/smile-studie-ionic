@@ -5,11 +5,9 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 
 import {MyApp} from './app.component';
-import {LoginPage} from "../pages/login/login";
 import {Http, HttpModule} from "@angular/http";
 import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {RegisterPage} from "../pages/register/register";
 import {WelcomePage} from "../pages/welcome/welcome";
 import {TutorialPage} from "../pages/tutorial/tutorial";
 import {InterventionPage} from "../pages/intervention/intervention";
@@ -34,9 +32,7 @@ export function HttpLoaderFactory(http: Http) {
 @NgModule({
   declarations: [
     MyApp,
-    LoginPage,
     TermsPage,
-    RegisterPage,
     WelcomePage,
     LoadingPage,
     TutorialPage,
@@ -66,9 +62,7 @@ export function HttpLoaderFactory(http: Http) {
   entryComponents: [
     MyApp,
     InterventionPage,
-    LoginPage,
     TermsPage,
-    RegisterPage,
     WelcomePage,
     LoadingPage,
     TutorialPage,

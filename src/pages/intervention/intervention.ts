@@ -30,7 +30,8 @@ export class InterventionPage implements OnInit {
 
   //TODO grp 1/2 fragebogen zweite runde datum
 
-  //TODO info button durch terms ersetzen
+  //TODO borders removen am ende der seite: intervention + int
+  //TODO revamp all storage and queries
 
   constructor(public navCtrl: NavController,
               public smileQueryService: SmileQueryService,
@@ -113,7 +114,7 @@ export class InterventionPage implements OnInit {
     }, () => {
       // probably 401 authorized
       this.interventionReadyTime = false;
-      this.authenticationService.clearSavedAccount();
+      //this.authenticationService.logoutAndClear();
       this.navCtrl.setRoot(WelcomePage);
     });
   }
@@ -221,13 +222,13 @@ export class InterventionPage implements OnInit {
         this.openQuestionaire(result);
       } else {
         // Not sure when this happens
-        this.authenticationService.clearSavedAccount();
+        //this.authenticationService.clearSavedAccount();
         this.navCtrl.setRoot(WelcomePage);
       }
     }, (error) => {
       // probably 401 unauthorized
       // offline case  @todo check error code
-      this.authenticationService.clearSavedAccount();
+      //this.authenticationService.clearSavedAccount();
       this.navCtrl.setRoot(WelcomePage);
     });
   }

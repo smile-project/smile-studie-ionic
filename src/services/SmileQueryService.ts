@@ -1,75 +1,137 @@
 import {Injectable} from "@angular/core";
 import {Http, Headers, Response} from "@angular/http";
 import {Observable} from "rxjs/Observable";
-import {AuthenticationService} from "./AuthenticationService";
+import {NativeStorage} from "@ionic-native/native-storage";
+import {TranslateService} from "@ngx-translate/core";
+import {NavController, ToastController} from "ionic-angular";
+import {WelcomePage} from "../pages/welcome/welcome";
 
 @Injectable()
 export class SmileQueryService {
 
-  public static baseUrl = "https://api.smile-studie.de/";
+  public static baseUrl = "http://192.168.178.30:8080/";
   private questionaireUrl = SmileQueryService.baseUrl + "questionaire";
   private questionaireAnswerUrl = SmileQueryService.baseUrl + "answer";
   private interventionAnswerUrl = SmileQueryService.baseUrl + "intervention";
   private interventionGroupUrl = SmileQueryService.baseUrl + "interventionGroup";
   private nextInterventionTimeUrl = SmileQueryService.baseUrl + "nextIntervention";
 
+  unknownServerError: string;
+  relogError: string;
+
   constructor(private http: Http,
-              private authenticationService: AuthenticationService) {
+              private nativeStorage: NativeStorage,
+              private translateService: TranslateService) {
+    translateService.get(['SERVER_ERROR', 'RELOG_ERROR']).subscribe(values => {
+      this.unknownServerError = values['SERVER_ERROR'];
+      this.relogError = values['RELOG_ERROR'];
+    })
+  }
+
+  getQuery(url: string): Observable<any> {
+    return new Observable(observer => {
+      this.nativeStorage.getItem('token').then(token => {
+        let header = new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        });
+        this.http.get(url, {headers: header}).map(SmileQueryService.sendFunction)
+          .catch(this.catchFunction).subscribe(response => {
+          observer.next(response);
+          observer.complete();
+        });
+      });
+    });
+  }
+
+  postQuery(url: string, body) {
+    return new Observable(observer => {
+      this.nativeStorage.getItem('token').then(token => {
+        let header = new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + token
+        });
+        this.http.post(url, body, {headers: header}).map(SmileQueryService.sendFunction)
+          .catch(this.catchFunction).subscribe(response => {
+          observer.next(response);
+          observer.complete();
+        });
+      })
+    });
   }
 
   getInterventionGroup(): Observable<any> {
-    return this.http.get(this.interventionGroupUrl, {headers: this.buildAuthHeader()}).map(SmileQueryService.sendFunction)
-      .catch(SmileQueryService.catchFunction)
-  }
-
-  getQuestionaire(): Observable<any> {
-    return this.http.get(this.questionaireUrl, {headers: this.buildAuthHeader()}).map(SmileQueryService.sendFunction)
-      .catch(SmileQueryService.catchFunction)
-  }
-
-  postInterventionAnswer(body): Observable<any> {
-    return this.http.post(this.interventionAnswerUrl, body, {headers: this.buildAuthHeader()}).map(SmileQueryService.sendFunction)
-      .catch(SmileQueryService.catchFunction)
-  }
-
-  postQuestionaireAnswer(body): Observable<any> {
-    return this.http.post(this.questionaireAnswerUrl, body, {headers: this.buildAuthHeader()}).map(SmileQueryService.sendFunction)
-      .catch(SmileQueryService.catchFunction);
-  }
-
-  getNextInterventionTime(): Observable<any> {
-    return this.http.get(this.nextInterventionTimeUrl, {headers: this.buildAuthHeader()}).map(SmileQueryService.sendFunction)
-      .catch(SmileQueryService.catchFunction);
+    return this.getQuery(this.interventionGroupUrl);
   }
 
 
-  static sendFunction(response: Response) {
+  getQuestionaire() {
+    return this.getQuery(this.questionaireUrl);
+  }
+
+  postInterventionAnswer(body) {
+    return this.postQuery(this.interventionAnswerUrl, body);
+  }
+
+  postQuestionaireAnswer(body) {
+    return this.postQuery(this.questionaireAnswerUrl, body);
+  }
+
+  getNextInterventionTime() {
+    return this.getQuery(this.nextInterventionTimeUrl);
+  }
+
+  private static sendFunction(response: Response) {
     if (response.status == 200) {
-      console.log("Status 200", response);
+      console.log("Query has status 200", response);
       try {
         return response.json();
       } catch (err) {
-        // json parse error in case the body is empty
-        console.log("Status 200 but empty body", response);
+        console.log("Query has status 200 but empty body", response);
+        return true;
       }
-      return true;
     } else {
-      console.log("Status != 200", response);
+      console.log("Query has a status != 200", response);
       return false;
     }
   }
 
-  static catchFunction(error) {
-    console.log("Error", error);
-    return Observable.throw(error)
+  private catchFunction(error) {
+    console.log("Query returned error", error);
+    try {
+      let errorStatus = error.json().status;
+      console.log("Error could be parsed", errorStatus);
+      if (errorStatus == 401) {
+        console.log("Token is not valid anymore -> relog necessary");
+        return Observable.throw(errorStatus);
+      } else {
+        console.log("Weird server error, it should only return 401!");
+        return Observable.throw(errorStatus + " " + error.json().message);
+      }
+    } catch (err) {
+      console.log("Error could NOT be parsed, must be unreachable");
+      return Observable.throw(this.unknownServerError);
+    }
   }
 
-
-  buildAuthHeader() {
-    let token = this.authenticationService.getToken();
-    return new Headers({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + token
-    });
+  public catchErrorHandling(error, navCtrl: NavController, toastCtrl: ToastController, nativeStorage: NativeStorage) {
+    if (error == 401) {
+      console.log("Token invalid -> clear all data and ask user to relog");
+      toastCtrl.create({
+        message: this.relogError,
+        duration: 3000
+      }).present();
+      console.log("Clearing storage and switching to WelcomePage");
+      nativeStorage.clear().then(() => {
+        navCtrl.setRoot(WelcomePage);
+      });
+    } else {
+      console.log("Either server can't be reached or unknown error, printing toast");
+      toastCtrl.create({
+        message: this.relogError,
+        duration: 3000
+      }).present();
+    }
   }
+
 }

@@ -17,6 +17,9 @@ export class InfoPage {
   slides: Slide[];
   redirectTo;
 
+  //TODO maybe link for seelsorge
+  //TODO fix linebreaks and stuff
+  //TODO telefonseelsorge call intent
 
   constructor(private navParams: NavParams,
               private navCtrl: NavController) {
