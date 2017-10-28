@@ -32,9 +32,11 @@ export class LoadingPage implements OnInit {
     });
   }
 
-  private getGroup() {
+  getGroup() {
     console.log("Getting group since it might have changed");
     this.smileQueryService.getInterventionGroup().subscribe(result => {
+      console.log('Group gotten from server:');
+      console.log(result);
       this.nativeStorage.setItem('userGroup', result).then(() => {
         this.navCtrl.setRoot(InterventionPage);
       });

@@ -28,6 +28,8 @@ export class WelcomePage implements OnInit {
     })
   };
 
+  //TODO check for version update/reinstall
+
   ngOnInit() {
     console.log("Calling Welcome.ngOnInit()");
     this.platform.ready().then(readySource => {
@@ -41,6 +43,8 @@ export class WelcomePage implements OnInit {
   checkForToken() {
     this.nativeStorage.getItem('token').then(token => {
       console.log("We already have a token!");
+      console.log("Token:");
+      console.log(token);
       this.nativeStorage.getItem('tutorialAccepted').then(() => {
         console.log("Tutorial was accepted already, moving to LoadingPage");
         this.navCtrl.setRoot(LoadingPage);

@@ -3,6 +3,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {NavController, ToastController} from "ionic-angular";
 import {SmileQueryService} from "../../services/SmileQueryService";
 import {InterventionPage} from "../intervention/intervention";
+import {NativeStorage} from "@ionic-native/native-storage";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'intervention-action',
@@ -16,7 +18,9 @@ export class InterventionActionPage {
 
   constructor(private navCtrl: NavController,
               private smileQueryService: SmileQueryService,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              private nativeStorage: NativeStorage,
+              private translateService: TranslateService) {
     this.interventionForm = new FormGroup({
       'input1': new FormControl('', Validators.required),
       'input2': new FormControl('',),
@@ -24,7 +28,11 @@ export class InterventionActionPage {
     });
 
     this.renderTime = new Date();
-    this.userGroup = Number(localStorage.getItem('userGroup'));
+    this.nativeStorage.getItem('userGroup').then((value: number) => {
+      console.log("Loaded userGroup: ");
+      console.log(value);
+      this.userGroup = value;
+    });
   }
 
   submitIntervention() {
@@ -35,26 +43,12 @@ export class InterventionActionPage {
         'answerInput3': this.interventionForm.value.input3,
         'submissionDuration': new Date().getTime() - this.renderTime.getTime()
       }).subscribe((result) => {
-          if (result) {
-            console.log("Good result!", result);
-            localStorage.removeItem('nextIntervention');
-            this.navCtrl.setRoot(InterventionPage);
-          } else {
-            console.log("Bad result!", result);
-            this.toastCtrl.create({
-              message: "Server zur Zeit nicht erreichbar, bitte überprüfe deine Internetverbindung.",
-              duration: 3000
-            }).present();
-          }
-        }, error => {
-          console.log("Error result!");
-          this.toastCtrl.create({
-            message: "Server zur Zeit nicht erreichbar, bitte überprüfe deine Internetverbindung.",
-            duration: 3000
-          }).present();
-          this.navCtrl.setRoot(InterventionPage);
-        }
-      )
+        //this will always be a good result, since we restrict postings in client
+        console.log("Intervention answers posted", result);
+        this.navCtrl.setRoot(InterventionPage);
+      }, error => {
+        this.smileQueryService.catchErrorHandling(error, this.navCtrl, this.toastCtrl, this.nativeStorage);
+      })
     }
   }
 

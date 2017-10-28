@@ -39,6 +39,9 @@ export class SmileQueryService {
           .catch(this.catchFunction).subscribe(response => {
           observer.next(response);
           observer.complete();
+        }, error => {
+          observer.error(error);
+          observer.complete();
         });
       });
     });
@@ -54,6 +57,9 @@ export class SmileQueryService {
         this.http.post(url, body, {headers: header}).map(SmileQueryService.sendFunction)
           .catch(this.catchFunction).subscribe(response => {
           observer.next(response);
+          observer.complete();
+        }, error => {
+          observer.error(error);
           observer.complete();
         });
       })
@@ -115,6 +121,8 @@ export class SmileQueryService {
   }
 
   public catchErrorHandling(error, navCtrl: NavController, toastCtrl: ToastController, nativeStorage: NativeStorage) {
+    console.log("catchErrorHandling()");
+    console.log(error);
     if (error == 401) {
       console.log("Token invalid -> clear all data and ask user to relog");
       toastCtrl.create({
@@ -127,8 +135,9 @@ export class SmileQueryService {
       });
     } else {
       console.log("Either server can't be reached or unknown error, printing toast");
+      let message = error.startsWith('undefined') ? this.unknownServerError : error;
       toastCtrl.create({
-        message: this.relogError,
+        message: message,
         duration: 3000
       }).present();
     }

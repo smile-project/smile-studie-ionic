@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {NavController} from "ionic-angular";
+import {NavController, ToastController} from "ionic-angular";
 import {SmileQueryService} from "../../services/SmileQueryService";
 import {AuthenticationService} from "../../services/AuthenticationService";
 import {WelcomePage} from "../welcome/welcome";
@@ -8,6 +8,9 @@ import {InterventionActionPage} from "../intervention-action/intervention-action
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {TranslateService} from "@ngx-translate/core";
 import {TermsPage} from "../terms/terms";
+import {NativeStorage} from "@ionic-native/native-storage";
+import {Observable} from "rxjs/Observable";
+import {Subscriber} from "rxjs/Subscriber";
 @Component({
   selector: 'intervention-page',
   templateUrl: 'intervention.html'
@@ -16,51 +19,159 @@ export class InterventionPage implements OnInit {
 
   alertTime: string;
   alertActive: boolean;
-  alertDate: Date;
-  interventionReadyTime: boolean;
-  interventionReadyGroup: boolean;
-  userGroup: number;
-  infoText: string;
 
+  interventionReadyTime: boolean;
+  userGroup: number;
+
+  alertDate: Date;
   nextDate: Date;
 
-  //TODO Group 3 no notification
-  //TODO text grp3 zentrieren
-  //TODO delete grp -1
+  infoText: string;
+  notificationTitle: string;
+  notificationText: string;
 
+  //TODO text grp3 zentrieren
   //TODO grp 1/2 fragebogen zweite runde datum
 
   //TODO borders removen am ende der seite: intervention + int
-  //TODO revamp all storage and queries
+  //TODO fix rights to be known at apk time
 
-  constructor(public navCtrl: NavController,
-              public smileQueryService: SmileQueryService,
-              public authenticationService: AuthenticationService,
+  constructor(private navCtrl: NavController,
+              private smileQueryService: SmileQueryService,
               private localNotifications: LocalNotifications,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private nativeStorage: NativeStorage,
+              private toastCtrl: ToastController) {
+    this.translateService.get(['NOTIFICATION_TITLE', 'NOTIFICATION_TEXT']).subscribe(values => {
+      this.notificationTitle = values['NOTIFICATION_TITLE'];
+      this.notificationText = values['NOTIFICATION_TEXT'];
+    })
   }
 
   ngOnInit(): void {
-    this.checkForQuestionaire();
     this.getLocalstorageValues();
   }
 
+  /**
+   * Load all values from nativeStorage and do some stuff when all is ready.
+   */
   getLocalstorageValues() {
-    let active = localStorage.getItem('alertActive');
-    let date = localStorage.getItem('alertDate');
-    let userGroup = localStorage.getItem('userGroup');
+    let observable = new Observable(observer => {
+      let doneAmount = 0;
+      this.nativeStorage.getItem('alertActive').then(value => {
+        this.alertActive = value;
+        console.log("loaded alertActive", this.alertActive);
 
-    this.handleNotificationActive(active);
-    this.handleAlertTime(date);
-    this.handleNextInterventionTime();
-    this.handleUserGroup(userGroup);
+        observer.next("alertActive handled");
+        doneAmount += 1;
+        console.log("doneAmount is " + doneAmount);
+        if (doneAmount == 4) {
+          observer.complete();
+        }
+
+      }).catch(() => {
+        this.initNotificationActive();
+
+        observer.next("alertActive handled");
+        doneAmount += 1;
+        console.log("doneAmount is " + doneAmount);
+        if (doneAmount == 4) {
+          observer.complete();
+        }
+      });
+
+      this.nativeStorage.getItem('alertDate').then(value => {
+        this.handleAlertDate(value);
+
+        observer.next("alertDate handled");
+        doneAmount += 1;
+        console.log("doneAmount is " + doneAmount);
+        if (doneAmount == 4) {
+          observer.complete();
+        }
+
+      }).catch(() => {
+        this.initAlertDate();
+
+        observer.next("alertDate handled");
+        doneAmount += 1;
+        console.log("doneAmount is " + doneAmount);
+        if (doneAmount == 4) {
+          observer.complete();
+        }
+      });
+
+      this.nativeStorage.getItem('userGroup').then(value => {
+        this.handleUserGroup(value);
+
+        observer.next("userGroup handled");
+        doneAmount += 1;
+        console.log("doneAmount is " + doneAmount);
+        if (doneAmount == 4) {
+          observer.complete();
+        }
+      });
+
+      this.smileQueryService.getNextInterventionTime().subscribe(result => {
+        console.log('Next interventionTime result');
+        console.log(result);
+        this.nextDate = new Date(result);
+        let currentDate = new Date();
+        let timeHasPassed = currentDate > this.nextDate;
+
+        console.log("Next intervention at", this.nextDate);
+
+        if (timeHasPassed) {
+          this.interventionReadyTime = true;
+        }
+
+        observer.next('nextInterventionTime handled');
+        doneAmount += 1;
+        console.log("doneAmount is " + doneAmount);
+        if (doneAmount == 4) {
+          observer.complete();
+        }
+      }, error => {
+        this.smileQueryService.catchErrorHandling(error, this.navCtrl, this.toastCtrl, this.nativeStorage);
+      })
+
+    });
+
+    observable.subscribe(Subscriber.create((message) => {
+      console.log("Subscriber: " + message);
+    }, null, () => {
+      console.log("Subscriber: observable is done");
+      this.getInfoText();
+      this.setNotification();
+    }));
   }
 
-  private handleNotificationActive(active: string) {
-    if (active == 'true') {
-      this.alertActive = true;
-    } else this.alertActive = active != 'false';
-    this.updateAlertActivation();
+  initNotificationActive() {
+    this.alertActive = true;
+    console.log("Initialized alertActive", this.alertActive);
+    this.nativeStorage.setItem('alertActive', this.alertActive);
+  }
+
+  initAlertDate() {
+    let currentDate = new Date();
+    currentDate.setSeconds(0);
+    currentDate.setMinutes(0);
+    currentDate.setHours(17);
+    this.alertTime = InterventionPage.createISOString(currentDate);
+    this.alertDate = currentDate;
+    console.log("Initialized alertDate", currentDate);
+    this.nativeStorage.setItem('alertDate', this.alertDate);
+  }
+
+  handleAlertDate(date: Date) {
+    this.alertTime = InterventionPage.createISOString(date);
+    this.alertDate = date;
+    console.log("Loaded alertDate", date);
+  }
+
+  handleUserGroup(group: number) {
+    this.userGroup = group;
+    console.log("Loaded userGroup", this.userGroup);
   }
 
   private static createISOString(date: Date) {
@@ -76,76 +187,9 @@ export class InterventionPage implements OnInit {
       seconds + "Z";
   }
 
-  private handleAlertTime(date: string) {
-    if (date) {
-      let gmtDate = new Date(date);
-      this.alertTime = InterventionPage.createISOString(gmtDate);
-      this.alertDate = gmtDate;
-      console.log("loaded alertDate", gmtDate);
-    } else {
-      let newDate = new Date();
-      newDate.setSeconds(0);
-      newDate.setMinutes(0);
-      newDate.setHours(17);
-      this.alertTime = InterventionPage.createISOString(newDate);
-      this.alertDate = newDate;
-      console.log("initialized alertDate", newDate);
-      localStorage.setItem('alertDate', newDate.toISOString());
-    }
-    this.setNotification();
-  }
-
-
-  private handleNextInterventionTime() {
-    this.smileQueryService.getNextInterventionTime().subscribe(result => {
-      this.nextDate = new Date(result);
-      let currentDate = new Date();
-      let timeHasPassed = currentDate > this.nextDate;
-
-      console.log("Next intervention at", this.nextDate);
-
-      if (timeHasPassed) {
-        this.interventionReadyTime = true;
-      }
-
-      // calling these here ensures we have the date ready
-      this.getInfoText();
-      this.setNotification();
-    }, () => {
-      // probably 401 authorized
-      this.interventionReadyTime = false;
-      //this.authenticationService.logoutAndClear();
-      this.navCtrl.setRoot(WelcomePage);
-    });
-  }
-
-  private handleUserGroup(userGroup: string) {
-    if (Number(userGroup) > 0) {
-      this.interventionReadyGroup = true;
-      this.userGroup = Number(userGroup);
-      console.log("loaded group", userGroup);
-
-      // calling these so we have them ready
-      this.getInfoText();
-      this.setNotification();
-    } else {
-      this.smileQueryService.getInterventionGroup().subscribe(result => {
-        if (result > 0) {
-          this.interventionReadyGroup = true;
-          this.userGroup = result;
-          console.log("group gotten from server", result);
-          localStorage.setItem('userGroup', result);
-          // calling these so we have them ready
-          this.getInfoText();
-          this.setNotification();
-        }
-      })
-    }
-  }
-
   getInfoText() {
     if (this.userGroup != 3) {
-      this.translateService.get('INTERVENTION_BUTTON_' + this.userGroup).subscribe(result => {
+      this.translateService.get('INTERVENTION_BUTTON_NORMAL').subscribe(result => {
         this.infoText = result;
       });
     } else {
@@ -160,7 +204,7 @@ export class InterventionPage implements OnInit {
   }
 
   updateAlertActivation() {
-    localStorage.setItem('alertActive', String(this.alertActive));
+    this.nativeStorage.setItem('alertActive', this.alertActive);
     this.setNotification();
   }
 
@@ -171,72 +215,35 @@ export class InterventionPage implements OnInit {
 
     this.alertTime = InterventionPage.createISOString(gmtDate);
     this.alertDate = gmtDate;
-    localStorage.setItem('alertDate', gmtDate.toISOString());
-    console.log('updated alertDate', gmtDate);
+    this.nativeStorage.setItem('alertDate', gmtDate);
+    console.log('Updated alertDate', gmtDate);
     this.setNotification();
   }
 
   setNotification() {
-    console.log("setNotification: alertactive && alertdate", this.alertActive, this.alertDate);
-    if (this.alertActive && this.alertDate && this.userGroup == 3 && this.nextDate) {
-      // edge case of group 3 in waiting time
-      console.log('setting waiting notification for group 3 during wait week');
-
-      this.localNotifications.clear(73468);
-      this.localNotifications.schedule({
-        id: 73468,
-        text: 'Deine Intervention für heute ist bereit!',
-        title: "Smile Studie",
-        at: this.nextDate
-      });
-      return;
-    }
-
-    if (this.alertActive && this.alertDate) {
+    console.log("setNotification: alertActive && alertDate", this.alertActive, this.alertDate);
+    if (this.alertActive && this.alertDate && this.userGroup != 3) {
+      console.log("setNotification: Notification will be set!");
       let date = new Date();
 
       if (date > this.alertDate) {
         let nextDayDate = new Date(this.alertDate.getTime() + 24 * 60 * 60 * 1000);
+        console.log("setNotification: old alertDate: ", this.alertDate);
         this.alertDate = nextDayDate;
-        console.log("updating notification: saved alertDate: ", this.alertDate);
-        console.log("updating notification: nextDayDate: ", nextDayDate);
-        localStorage.setItem('alertDate', nextDayDate.toISOString());
+        console.log("setNotification: next alertDate: ", this.alertDate);
+        this.nativeStorage.setItem('alertDate', this.alertDate);
       } else {
-        console.log("updating notification: we are not past that date!");
+        console.log("setNotification: we are not past the date!", date, this.alertDate);
       }
 
       this.localNotifications.clear(73468);
       this.localNotifications.schedule({
         id: 73468,
-        text: 'Deine Intervention für heute ist bereit!',
-        title: "Smile Studie",
+        text: this.notificationTitle,
+        title: this.notificationText,
         firstAt: this.alertDate,
         every: "day"
       })
-    }
-  }
-
-  private checkForQuestionaire() {
-    this.smileQueryService.getQuestionaire().subscribe((result) => {
-      if (result) {
-        this.openQuestionaire(result);
-      } else {
-        // Not sure when this happens
-        //this.authenticationService.clearSavedAccount();
-        this.navCtrl.setRoot(WelcomePage);
-      }
-    }, (error) => {
-      // probably 401 unauthorized
-      // offline case  @todo check error code
-      //this.authenticationService.clearSavedAccount();
-      this.navCtrl.setRoot(WelcomePage);
-    });
-  }
-
-  private openQuestionaire(result: any) {
-    if (result.id != null) {
-      // we have a questionaire!
-      this.navCtrl.setRoot(QuestionairePage, {questionaire: result});
     }
   }
 
@@ -245,12 +252,7 @@ export class InterventionPage implements OnInit {
   }
 
   showInfo() {
-    if (this.userGroup >= 1 && this.userGroup <= 3) {
-      this.translateService.get('GROUP_' + this.userGroup + '_INFO_TEXT').subscribe(result => {
-        this.navCtrl.push(TermsPage);
-      });
-      return;
-    }
+    this.navCtrl.push(TermsPage);
   }
 
 }
