@@ -20,11 +20,13 @@ export class LoadingPage implements OnInit {
   ngOnInit() {
     console.log("Getting new Questionaires");
     this.smileQueryService.getQuestionaire().subscribe(result => {
-      if (result && result.id != null) {
+      if (result.id != null) {
         console.log("Got questionaire " + result.id);
         this.navCtrl.setRoot(QuestionairePage, {questionaire: result});
       } else {
-        console.log("No questionaires to do right now!");
+        console.log("No questionaires to do right now, next questionaire time:");
+        console.log(result.nextQuestionaireTime);
+        //TODO do something with this
         this.getGroup();
       }
     }, error => {

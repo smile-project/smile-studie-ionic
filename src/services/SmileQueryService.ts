@@ -9,7 +9,7 @@ import {WelcomePage} from "../pages/welcome/welcome";
 @Injectable()
 export class SmileQueryService {
 
-  public static baseUrl = "http://192.168.178.30:8080/";
+  public static baseUrl = "https://api.smile-studie.de/";
   private questionaireUrl = SmileQueryService.baseUrl + "questionaire";
   private questionaireAnswerUrl = SmileQueryService.baseUrl + "answer";
   private interventionAnswerUrl = SmileQueryService.baseUrl + "intervention";

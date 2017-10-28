@@ -137,7 +137,9 @@ export class InterventionPage implements OnInit {
 
     observable.subscribe(Subscriber.create((message) => {
       console.log("Subscriber: " + message);
-    }, null, () => {
+    }, error => {
+      console.log("Subscriber: Error happened: " + error);
+    }, () => {
       console.log("Subscriber: observable is done");
       this.getInfoText();
       this.setNotification();

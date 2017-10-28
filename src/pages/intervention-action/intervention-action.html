@@ -9,7 +9,7 @@
 <ion-content class="content-bg transparent-bg">
 
   <ion-item class="pad-right-16 transparent-bg" text-wrap>
-    <ion-label class="preserve-line-breaks text">{{'INTERVENTION_GROUP' + userGroup +'_TEXT' | translate}}</ion-label>
+    <ion-label class="preserve-line-breaks text-no-pad">{{'INTERVENTION_GROUP' + userGroup +'_TEXT' | translate}}</ion-label>
   </ion-item>
 
   <form (submit)="submitIntervention()" [formGroup]="interventionForm" name="interventionForm">
