@@ -14,8 +14,9 @@
       <p class="transparent-bg text preserve-line-breaks">{{slide.description}}</p>
       <a *ngIf="slide.link" class="depression-warning-link" href="http://{{slide.link}}">{{slide.link}}</a>
       <p *ngIf="slide.afterLink" class="transparent-bg text preserve-line-breaks">{{slide.afterLink}}</p>
-      <a *ngIf="slide.phoneNumber" class="depression-warning-link preserve-line-breaks"
-         href="tel:{{slide.phoneNumber}}">{{slide.phoneNumber}}\n\n</a>
+      <a *ngIf="slide.phoneNumber" class="depression-warning-link"
+         href="tel:{{slide.phoneNumber}}">{{slide.phoneNumber}}</a>
+      <p *ngIf="slide.phoneNumber" class="preserve-line-breaks"></p>
       <button ion-button round large class="quokka-button" (click)="okay()">{{'FORWARD' | translate}}</button>
     </ion-slide>
   </ion-slides>

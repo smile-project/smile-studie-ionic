@@ -26,7 +26,7 @@ export class LoadingPage implements OnInit {
       } else {
         console.log("No questionaires to do right now, next questionaire time:");
         console.log(result.nextQuestionaireTime);
-        //TODO do something with this
+        this.nativeStorage.setItem('nextQuestionaireDate', result.nextQuestionaireTime);
         this.getGroup();
       }
     }, error => {

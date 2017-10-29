@@ -31,10 +31,6 @@ export class MyApp {
     } else {
       this.translate.use('de'); // Set your language here
     }
-
-    this.translate.get(['BACK_BUTTON_TEXT']).subscribe(values => {
-      //this.config.set('ios', 'backButtonText', values.BACK_BUTTON_TEXT);
-    });
   }
 
 }

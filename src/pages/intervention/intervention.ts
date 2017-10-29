@@ -1,9 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {NavController, ToastController} from "ionic-angular";
 import {SmileQueryService} from "../../services/SmileQueryService";
-import {AuthenticationService} from "../../services/AuthenticationService";
-import {WelcomePage} from "../welcome/welcome";
-import {QuestionairePage} from "../questionaire/questionaire";
 import {InterventionActionPage} from "../intervention-action/intervention-action";
 import {LocalNotifications} from "@ionic-native/local-notifications";
 import {TranslateService} from "@ngx-translate/core";
@@ -11,8 +8,6 @@ import {TermsPage} from "../terms/terms";
 import {NativeStorage} from "@ionic-native/native-storage";
 import {Observable} from "rxjs/Observable";
 import {Subscriber} from "rxjs/Subscriber";
-import {LoadingPage} from "../loading/loading";
-import {InfoPage} from "../info/info";
 @Component({
   selector: 'intervention-page',
   templateUrl: 'intervention.html'
@@ -26,13 +21,13 @@ export class InterventionPage implements OnInit {
   userGroup: number;
 
   alertDate: Date;
-  nextDate: Date;
+  nextInterventionDate: Date;
+  nextQuestionaireDate: Date;
 
   infoText: string;
   notificationTitle: string;
   notificationText: string;
 
-  //TODO grp 1/2 fragebogen zweite runde datum
 
   constructor(private navCtrl: NavController,
               private smileQueryService: SmileQueryService,
@@ -63,7 +58,7 @@ export class InterventionPage implements OnInit {
         observer.next("alertActive handled");
         doneAmount += 1;
         console.log("doneAmount is " + doneAmount);
-        if (doneAmount == 4) {
+        if (doneAmount == 5) {
           observer.complete();
         }
 
@@ -73,7 +68,7 @@ export class InterventionPage implements OnInit {
         observer.next("alertActive handled");
         doneAmount += 1;
         console.log("doneAmount is " + doneAmount);
-        if (doneAmount == 4) {
+        if (doneAmount == 5) {
           observer.complete();
         }
       });
@@ -84,7 +79,7 @@ export class InterventionPage implements OnInit {
         observer.next("alertDate handled");
         doneAmount += 1;
         console.log("doneAmount is " + doneAmount);
-        if (doneAmount == 4) {
+        if (doneAmount == 5) {
           observer.complete();
         }
 
@@ -94,7 +89,7 @@ export class InterventionPage implements OnInit {
         observer.next("alertDate handled");
         doneAmount += 1;
         console.log("doneAmount is " + doneAmount);
-        if (doneAmount == 4) {
+        if (doneAmount == 5) {
           observer.complete();
         }
       });
@@ -105,7 +100,19 @@ export class InterventionPage implements OnInit {
         observer.next("userGroup handled");
         doneAmount += 1;
         console.log("doneAmount is " + doneAmount);
-        if (doneAmount == 4) {
+        if (doneAmount == 5) {
+          observer.complete();
+        }
+      });
+
+      // this should always be set if we can get to the interventionpage
+      this.nativeStorage.getItem('nextQuestionaireDate').then(value => {
+        this.nextQuestionaireDate = new Date(value);
+
+        observer.next("nextQuestionaireDate handled");
+        doneAmount += 1;
+        console.log("doneAmount is " + doneAmount);
+        if (doneAmount == 5) {
           observer.complete();
         }
       });
@@ -113,11 +120,11 @@ export class InterventionPage implements OnInit {
       this.smileQueryService.getNextInterventionTime().subscribe(result => {
         console.log('Next interventionTime result');
         console.log(result);
-        this.nextDate = new Date(result);
+        this.nextInterventionDate = new Date(result);
         let currentDate = new Date();
-        let timeHasPassed = currentDate > this.nextDate;
+        let timeHasPassed = currentDate > this.nextInterventionDate;
 
-        console.log("Next intervention at", this.nextDate);
+        console.log("Next intervention at", this.nextInterventionDate);
 
         if (timeHasPassed) {
           this.interventionReadyTime = true;
@@ -126,7 +133,7 @@ export class InterventionPage implements OnInit {
         observer.next('nextInterventionTime handled');
         doneAmount += 1;
         console.log("doneAmount is " + doneAmount);
-        if (doneAmount == 4) {
+        if (doneAmount == 5) {
           observer.complete();
         }
       }, error => {
@@ -188,19 +195,20 @@ export class InterventionPage implements OnInit {
   }
 
   getInfoText() {
+    console.log("Called getInfoText()");
     if (this.userGroup != 3) {
-      this.translateService.get('INTERVENTION_BUTTON_NORMAL').subscribe(result => {
-        this.infoText = result;
+      this.translateService.get(['INTERVENTION_BUTTON_NORMAL', 'INTERVENTION_BUTTON_NORMAL_END']).subscribe(result => {
+        this.infoText = result['INTERVENTION_BUTTON_NORMAL'] + " " + InterventionPage.formatDate(this.nextQuestionaireDate) + " " + result['INTERVENTION_BUTTON_NORMAL_END'];
       });
     } else {
       this.translateService.get(['INTERVENTION_BUTTON_3', 'INTERVENTION_BUTTON_3_END']).subscribe(result => {
-        this.infoText = result['INTERVENTION_BUTTON_3'] + " " + InterventionPage.formatDate(this.nextDate) + " " + result['INTERVENTION_BUTTON_3_END'];
+        this.infoText = result['INTERVENTION_BUTTON_3'] + " " + InterventionPage.formatDate(this.nextQuestionaireDate) + " " + result['INTERVENTION_BUTTON_3_END'];
       });
     }
   }
 
   static formatDate(date: Date) {
-    return date ? date.getDate() + "." + (date.getMonth() + 1) : "";
+    return date ? date.getDate().toString() + "." + (date.getMonth() + 1).toString() : "";
   }
 
   updateAlertActivation() {
@@ -244,6 +252,9 @@ export class InterventionPage implements OnInit {
         firstAt: this.alertDate,
         every: "day"
       })
+    } else {
+      console.log("Notification disabled");
+      this.localNotifications.clear(73468);
     }
   }
 

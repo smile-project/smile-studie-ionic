@@ -22,9 +22,9 @@
       <p class="text">{{page.text}}</p>
 
       <ion-list #list radio-group [(ngModel)]="currentSelectedValue" *ngIf="page.answers[0].type === 'radio' || page.answers[0].type === 'radio_text'">
-        <ion-item class="transparent-bg pad-right-16" *ngFor="let answer of page.answers; let j = index" (click)="openTextField(answer, page.title)">
-          <ion-radio class="transparent-bg" (click)="openTextField(answer, page.title)" [value]="answer.value"></ion-radio>
-          <ion-label class="transparent-bg" (click)="openTextField(answer, page.title)">{{answer.text}}</ion-label>
+        <ion-item class="transparent-bg pad-right-16" *ngFor="let answer of page.answers; let j = index" (click)="openTextField(answer )">
+          <ion-radio class="transparent-bg" (click)="openTextField(answer )" [value]="answer.value"></ion-radio>
+          <ion-label class="transparent-bg" (click)="openTextField(answer )">{{answer.text}}</ion-label>
         </ion-item>
       </ion-list>
 

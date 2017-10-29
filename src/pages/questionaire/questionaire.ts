@@ -136,7 +136,7 @@ export class QuestionairePage implements OnInit {
     }
   }
 
-  openTextField(answer: any, pageTitle: string) {
+  openTextField(answer: any) {
     if (answer.type === 'radio_text') {
       let alert = this.alertCtrl.create({
         title: answer.text,

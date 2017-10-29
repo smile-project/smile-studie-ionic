@@ -4,7 +4,6 @@ import {NavController, ToastController} from "ionic-angular";
 import {SmileQueryService} from "../../services/SmileQueryService";
 import {InterventionPage} from "../intervention/intervention";
 import {NativeStorage} from "@ionic-native/native-storage";
-import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'intervention-action',
@@ -19,8 +18,7 @@ export class InterventionActionPage {
   constructor(private navCtrl: NavController,
               private smileQueryService: SmileQueryService,
               private toastCtrl: ToastController,
-              private nativeStorage: NativeStorage,
-              private translateService: TranslateService) {
+              private nativeStorage: NativeStorage) {
     this.interventionForm = new FormGroup({
       'input1': new FormControl('', Validators.required),
       'input2': new FormControl('',),
