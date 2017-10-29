@@ -23,7 +23,6 @@
     </ion-slide>
 
     <ion-slide *ngFor="let slide of slides">
-      <img [src]="slide.image" class="slide-image"/>
       <h2 class="main-title" [innerHTML]="slide.title"></h2>
       <p class="text" [innerHTML]="slide.description"></p>
       <button class="top-margin-25 quokka-button" ion-button (click)="continueSwipe()" >{{'FORWARD' | translate}}</button>

@@ -17,6 +17,8 @@ export class LoadingPage implements OnInit {
   }
 
 
+  //TODO loading screens are for loading, duh. Why don't i load the InterventionPage stuff there?
+
   ngOnInit() {
     console.log("Getting new Questionaires");
     this.smileQueryService.getQuestionaire().subscribe(result => {

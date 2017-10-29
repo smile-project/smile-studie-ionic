@@ -6,7 +6,6 @@ import {LoadingPage} from "../loading/loading";
 import {UniqueDeviceID} from "@ionic-native/unique-device-id";
 import {NativeStorage} from "@ionic-native/native-storage";
 import {TranslateService} from "@ngx-translate/core";
-import {InterventionPage} from "../intervention/intervention";
 @Component({
   selector: 'welcome-page',
   templateUrl: 'welcome.html'
@@ -30,8 +29,6 @@ export class WelcomePage implements OnInit {
   };
 
   //TODO for future versions: check for version update/reinstall
-  //TODO update website links etc
-  //TODO setup auto dump and upload of database
 
   ngOnInit() {
     console.log("Calling Welcome.ngOnInit()");

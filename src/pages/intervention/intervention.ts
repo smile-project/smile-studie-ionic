@@ -74,7 +74,8 @@ export class InterventionPage implements OnInit {
       });
 
       this.nativeStorage.getItem('alertDate').then(value => {
-        this.handleAlertDate(value);
+        let date = new Date(value);
+        this.handleAlertDate(date);
 
         observer.next("alertDate handled");
         doneAmount += 1;
@@ -167,7 +168,7 @@ export class InterventionPage implements OnInit {
     this.alertTime = InterventionPage.createISOString(currentDate);
     this.alertDate = currentDate;
     console.log("Initialized alertDate", currentDate);
-    this.nativeStorage.setItem('alertDate', this.alertDate);
+    this.nativeStorage.setItem('alertDate', this.alertDate.getTime());
   }
 
   handleAlertDate(date: Date) {
@@ -223,8 +224,8 @@ export class InterventionPage implements OnInit {
 
     this.alertTime = InterventionPage.createISOString(gmtDate);
     this.alertDate = gmtDate;
-    this.nativeStorage.setItem('alertDate', gmtDate);
-    console.log('Updated alertDate', gmtDate);
+    this.nativeStorage.setItem('alertDate', gmtDate.toString());
+    console.log('Updated alertDate', gmtDate.getTime());
     this.setNotification();
   }
 
