@@ -32,6 +32,7 @@
         "@ngx-translate/http-loader": "0.0.3",
         "@types/keycloak-js": "^2.5.2",
         "cordova-android": "^6.3.0",
+        "cordova-android-support-gradle-release": "^1.4.2",
         "cordova-custom-config": "^4.0.2",
         "cordova-plugin-app-event": "file:node_modules/cordova-plugin-app-event",
         "cordova-plugin-console": "^1.1.0",
@@ -67,7 +68,10 @@
             "cordova-plugin-app-event": {},
             "cordova-plugin-uniquedeviceid": {},
             "cordova-plugin-nativestorage": {},
-            "cordova-custom-config": {}
+            "cordova-custom-config": {},
+            "cordova-android-support-gradle-release": {
+                "ANDROID_SUPPORT_VERSION": "27.+"
+            }
         },
         "platforms": [
             "android"
